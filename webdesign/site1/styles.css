@@ -1,3 +1,12 @@
+.first{
+    background-color:rosybrown;
+    float:left;
+}
+.second{
+    background-color:aqua;
+    float:left;
+}
+
 body{
     font-family:Arial;
     background-color: beige;
@@ -21,4 +30,7 @@ th:nth-child(odd), td:nth-child(odd){
 }
 tr:nth-child(odd){
     background-color: aqua;
+}
+ol, ul, li, dl, dd, dt {
+    color: black;
 }
