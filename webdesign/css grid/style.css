@@ -1,3 +1,6 @@
+body{
+    background-color:pink;
+}
 main{
     display:grid;
     height:100%;
