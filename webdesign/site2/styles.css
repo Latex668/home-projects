@@ -87,6 +87,7 @@ div{
     display:block;
 }
 .list2 li a{
+    color:black;
     text-decoration:none;
     display:block;
     padding:5px;
