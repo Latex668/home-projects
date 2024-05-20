@@ -17,6 +17,7 @@ main{
 
 }
 .list1 li a{
+    color:black;
     text-decoration:none;
     text-align:center;
     display:inline;
