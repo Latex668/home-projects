@@ -1,0 +1,112 @@
+body{
+    background-color:pink;
+}
+main{
+    display:grid;
+    grid-template-rows: 1fr 9fr 1fr;
+    grid-template-columns: 1fr 8fr 1fr;
+    font-family:Arial;
+}
+.list1{
+    padding:15px 8px;
+    margin: 15px 8px;
+    list-style-type:none;
+}
+.list1 li{
+    display:inline;
+
+}
+.list1 li a{
+    color:black;
+    text-decoration:none;
+    text-align:center;
+    display:inline;
+    padding:8px 8px;
+    background-color:#fff;
+}
+.list1 li a:hover{
+    background-color:gold;
+}
+.list1 .active{
+    background-color:orangered;
+}
+.list1 a:visited{
+    color:black;
+}
+header{
+    width:100%;
+    height:100%;
+    grid-area: 1/1/span 1/span 3;
+
+}
+header img{
+    border-radius:60%;
+    float:left;
+    padding:10px;
+    margin:0px;
+    width:100px;
+    height:50px;
+}
+div{
+    width:100%;
+    height:100%;
+
+}
+
+.z1{
+    grid-area: 2/1/span 1/span 1;
+}
+.z1 img{
+    width:200px;
+    position:relative;
+    top:30%;
+}
+.z1 h4{
+    text-indent: 20px;
+    position:relative;
+    padding:8px;
+    top:30%;
+}
+.z2{
+    grid-area: 2/2/span 1/span 1;
+}
+.z2 p{
+    font-size:large;
+    text-indent: 20px;
+    padding:10px;
+    margin:10px;
+}
+.z3{
+    grid-area: 2/3/span 1/span 1;
+}
+.list2{
+    list-style-type:none;
+    margin: 25px 10px;
+}
+.list2 li{
+    display:block;
+}
+.list2 li a{
+    text-decoration:none;
+    display:block;
+    padding:5px;
+    margin:5px;
+    background-color: #fff;
+}
+.list2 a:hover{
+    background-color:gold;
+}
+.list2 a:visited{
+    color:black;
+}
+.list2 .active{
+    background-color:orangered;
+}
+footer{
+    position:relative;
+    top:100%;
+    text-align:center;
+    width:100%;
+    height:100%;
+    grid-area: 3/1/span 1/span 3;
+}
