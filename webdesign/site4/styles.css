@@ -1,0 +1,22 @@
+body{
+    display:grid;
+    grid-template-rows: 2fr 7fr 1fr ;
+    grid-template-columns: 2fr 5fr 1fr;
+    background-color:rgb(45, 2, 45)
+}
+
+header{
+    grid-area: 1/1/span 1/span 3;
+}
+footer {
+    grid-area:2/1/span 1/span 3;
+}
+.zona1{
+    grid-area:2/1/span 1/span 1;
+}
+.zona2{
+    grid-area: 2/2/span 1/span 1;
+}
+.zona3{
+    grid-area: 2/3/span 1/span 1;
+}

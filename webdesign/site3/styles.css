@@ -1,0 +1,100 @@
+body{
+    font-family: monospace;
+    background-color:#333;
+    color:gold;
+    display:grid;
+    grid-template-rows: 1fr 5fr 1fr;
+    grid-template-columns: 1fr 5fr 2fr;
+    border-style:solid;
+    justify-content: center;
+    align-items: center;
+    font-size:large;
+}
+
+
+header{
+    grid-area: 1/1/span 1/span 3;
+}
+footer{
+    grid-area:3/1/span 1/span 3;
+}
+footer img{
+    width:80px;
+    float:left;
+}
+footer h1{
+    float:right;
+}
+header h1{
+    float:left;
+    color:gold;
+    text-indent: 20%;
+}
+.navbar{
+    float: right;
+    list-style-type:none;
+    padding: 8px 8px;
+    margin: 8px 8px;
+}
+.navbar li{
+    display:inline;
+
+}
+.navbar li a{
+    display:inline;
+    color:gold;
+    text-decoration:none;
+    padding: 8px 8px;
+}
+.navbar li a:hover{
+    font-size:larger; 
+    background-color:tomato;
+    color:cyan;
+}
+.z1{
+    grid-area: 2/1/span 1/span 1;
+}
+.menu{
+    list-style-type:none;
+    padding: 8px 8px;
+    margin: 8px 8px;
+}
+.menu li{
+    display:block;
+    color:gold;
+}
+.menu li a{
+    padding: 8px 8px;
+    text-decoration:none;
+    display:block;
+    color:gold;
+}
+.menu li a:hover{
+    font-size:larger;
+    background-color:tomato;
+    color:cyan;
+}
+.z2{
+    grid-area: 2/2/span 1/span 1;
+}
+.z2 p{
+    text-indent:10%;
+    font-size:x-large;
+}
+.z3{
+    grid-area: 2/3/span 1/span 1;
+}
+@keyframes animatietext{
+    from{transform:translate(0%,0%);
+    color:white;}
+    to{transform:translate(50%,50%);
+    color:gold;}
+}
+.z3 h1{
+    animation-timing-function: cubic-bezier();
+    animation-direction: alternate-reverse;
+    animation-name: animatietext;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
