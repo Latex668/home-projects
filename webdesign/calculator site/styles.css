@@ -1,0 +1,75 @@
+body{
+    font-size:large;
+    font-family:Arial;
+    background-color:#282828;
+    display:grid;
+    grid-template-columns: 100%;
+    grid-template-rows:10vh 80vh 10vh;
+    color:gold;
+}
+
+header {
+    height:100%;
+    grid-area:1/1/span 1/span 1;
+}
+header h1{
+    float:left;
+}   
+ul li{
+    float:right;
+    display:inline;
+    padding: 8px 8px;
+}
+a{
+    padding: 8px 8px;
+    text-decoration:none;
+    color:gold;
+}
+a:hover{
+    background-color:gold;
+    color:black;
+}
+.active{
+    color:#fff;
+    background-color:rgb(255, 0, 0);
+}
+
+@keyframes colorAnimation{
+    from{color:rgb(0, 0, 0);
+    font-size:small;};
+    to{color:rgb(255, 255, 255);
+    font-size:larger;};
+}
+footer {
+    height:100%;
+    grid-area:3/1/span 1/span 1;
+    text-align:center;
+    animation-name: colorAnimation;
+    animation-iteration-count: infinite;
+    animation-direction: alternate-reverse;
+    animation-timing-function: cubic-bezier();
+    animation-duration:5s;
+}
+
+article {
+    place-items:center;
+    height:100%;
+    grid-area:2/1/span 1/span 1;
+}
+article input{
+    background-color:#282828;
+    text-decoration:none;
+    border: none;
+    font-size:large;
+    color:gold;
+    outline:none;
+    width:60px;
+}
+article button{
+    background-color:#282828;
+    color:gold;
+    border:none;
+    text-decoration:none;
+    font-size:large;
+}
+
