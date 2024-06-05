@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>fucking bitch site</title>
+        <style>
+            body{
+                background-color: #212121;
+                color:gold;
+            }
+        </style>
+    </head>
+    <body>
+       
+        <h1>Generating random number</h1>
+        <p>The numbers are: <span id='rand1'>-</span></p>
+        <p><span id='rand2'>-</span></p>
+        <button id='BUT' onclick='BUT_SEND()'>Send info</button>
+
+    </body>
+    <script>
+        var Socket;
+        function init(){
+            Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+            Socket.onmessage = function(event){
+                processCommand(event);
+            };
+        }
+        function BUT_SEND(){
+            var msg = {
+                brand: 'Harley Benton',
+                type: 'TE-20HH',
+                year: 'idk',
+                color: 'black'
+            };
+            Socket.send(JSON.stringify(msg));
+        }
+        function processCommand(event){
+            var obj = JSON.parse(event.data);
+            document.getElementById('rand1').innerHTML = obj.rand1;
+            document.getElementById('rand2').innerHTML = obj.rand2;
+            console.log(obj.rand1);
+            console.log(obj.rand2);
+        }
+        window.onload = function(event){
+            init();
+        }
+    </script>
+</html>
