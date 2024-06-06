@@ -35,29 +35,30 @@
             };
         }
         function changeLED(ledNumber){
-            console.log(ledNumber);
             let msg = {
-                type: 'ledNumber',
+                type: 'ledChanged',
                 value: ledNumber
             };
             Socket.send(JSON.stringify(msg));
         }
         function brightness(intensity){
-            console.log(intensity);
             let msg = {
                 type: 'brightness',
                 value: intensity
             };
+            Socket.send(JSON.stringify(msg));
         }
         function processCommand(event){
-            var obj = JSON.parse(event.data);
+            let obj = JSON.parse(event.data);
             let type = obj.type;
-            if(type.localeCompare('intensity') == 0){
-                let intensity = parseInt(obj.value);
-                slider.value = intensity;
-                output.value = intensity;
-            }else if(type.localeCompare('ledNumber')){
-                let l_ledChanged = parseInt(obj.value);
+            if(type.localeCompare('brightness') == 0){
+                var ledIntensity = parseInt(obj.value);
+                slider.value = ledIntensity;
+                output.innerHTML = ledIntensity;
+                console.log(ledIntensity);
+            }else if(type.localeCompare('ledChanged') == 0){
+                var l_ledChanged = parseInt(obj.value);
+                console.log(l_ledChanged);
                 if(l_ledChanged == 0){
                     document.getElementById('LED0').checked = true;
                 }else if(l_ledChanged == 1){
