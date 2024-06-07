@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>fucking bitch site</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'> 
+        <style>
+            body{
+                background-color: #212121;
+                color:gold;
+                font-family:Arial;
+            }
+            button{
+                background-color: #212121;
+                padding: 15px 15px;
+                border:solid;
+                border-radius:100vw;
+                color:gold;
+                text-decoration: none;
+                font-size:xx-large;
+            }
+            button:hover{
+                background-color:gold;
+                color:black;
+            }
+        
+            .buttons{
+                position:relative;
+                top:2vw;
+                
+            }
+        </style>
+    </head>
+    <body> 
+        <h1>The motor direction is: <span id='direction'>-</span></h1>
+        <h1>Speed of the motor is: <span id='speed'>-</span></h1>
+        <h1>Servo degrees are: <span id='deg'>-</span></h1>
+
+        <div class='buttons'style='text-align:center; width:480px'>
+            <button onclick='motorControl(1)'>UP</button><br>
+            <button onclick='servoControl(1); motorControl(2)'>LEFT</button><button onclick='servoControl(2); motorControl(3)'>RIGHT</button><br>
+            <button onclick='motorControl(4)'>DOWN</button><br><br><br>
+            <button onclick='speedControl(0)'>-Speed</button><button onclick='motorControl(0)'>STOP</button><button onclick='speedControl(1)'>+Speed</button>
+        </div>
+    </body>
+    <script>
+        var Socket;
+        let dirOut = document.getElementById('direction');
+        let deg = 45;
+        let speed = 127;
+
+        function init(){
+            Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+            Socket.onmessage = function(event){
+                processCommand(event);
+            };
+        }
+
+        function servoControl(degToInc){
+            if(degToInc == 1){
+                deg-=15;
+            }else if(degToInc == 2){
+                deg+=15;
+            }
+            if(deg>90){
+                deg = 90;
+            }else if(deg<0){
+                deg = 0;
+            }
+            let msg = {
+                type: 'degrees',
+                value: deg
+            };
+            console.log(deg);
+            Socket.send(JSON.stringify(msg));
+        }
+
+        function speedControl(code){
+            if(code == 0){
+                speed-=25;
+            }else if(code == 1){
+                speed+=25;
+            }
+            if(speed>255){
+                speed = 255;
+            }else if(speed<0){
+                speed = 0;
+            }
+            let msg = {
+                type: 'speed',
+                value: speed
+            };
+            Socket.send(JSON.stringify(msg));
+        }
+
+        function motorControl(dir){
+            let msg = {
+                type: 'direction',
+                value: dir
+            };
+            Socket.send(JSON.stringify(msg));
+        }
+        
+        function processCommand(event){
+            let obj = JSON.parse(event.data);
+            let type = obj.type;
+            if(type.localeCompare('direction') == 0){
+                let l_dir = parseInt(obj.value);
+                if(l_dir == 0){
+                    dirOut.innerHTML = 'STOP';
+                }else if(l_dir == 1){
+                    dirOut.innerHTML = 'UP';
+                }else if(l_dir == 2){
+                    dirOut.innerHTML = 'LEFT';
+                }else if(l_dir == 3){
+                    dirOut.innerHTML = 'RIGHT';
+                }else if(l_dir == 4){
+                    dirOut.innerHTML = 'DOWN';
+                }
+                
+                console.log(l_dir);
+            }
+            if(type.localeCompare('degrees') == 0){
+                let l_deg = parseInt(obj.value);
+                document.getElementById('deg').innerHTML = obj.value;
+            } 
+            if(type.localeCompare('speed') == 0){
+                let l_speed = parseInt(obj.value);
+                document.getElementById('speed').innerHTML = obj.value;
+            }
+        }
+
+        window.onload = function(event){
+            init();
+        }
+    </script>
+</html>
