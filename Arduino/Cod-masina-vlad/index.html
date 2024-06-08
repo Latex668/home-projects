@@ -32,14 +32,16 @@
     </head>
     <body> 
         <h1>The motor direction is: <span id='direction'>-</span></h1>
-        <h1>Speed of the motor is: <span id='speed'>-</span></h1>
-        <h1>Servo degrees are: <span id='deg'>-</span></h1>
+        <h2>Speed of the motor is: <span id='speed'>-</span></h2>
+        <h2>Servo degrees are: <span id='deg'>-</span>*</h2>
+        <h2>Distance from object in front of car is: <span id='dis'>-</span> cm</h2>
 
         <div class='buttons'style='text-align:center; width:480px'>
             <button onclick='motorControl(1)'>UP</button><br>
             <button onclick='servoControl(1); motorControl(2)'>LEFT</button><button onclick='servoControl(2); motorControl(3)'>RIGHT</button><br>
             <button onclick='motorControl(4)'>DOWN</button><br><br><br>
-            <button onclick='speedControl(0)'>-Speed</button><button onclick='motorControl(0)'>STOP</button><button onclick='speedControl(1)'>+Speed</button>
+            <button onclick='speedControl(0)'>-Speed</button><button onclick='motorControl(0)'>STOP</button><button onclick='speedControl(1)'>+Speed</button><br>
+            <button onclick='motorControl(5)'>M3 Reverse</button><button onclick='motorControl(6)'>M3 Forward</button>
         </div>
     </body>
     <script>
@@ -115,6 +117,10 @@
                     dirOut.innerHTML = 'RIGHT';
                 }else if(l_dir == 4){
                     dirOut.innerHTML = 'DOWN';
+                }else if(l_dir == 5){
+                    dirOut.innerHTML = 'M3 REVERSE';
+                }else if(l_dir == 6){
+                    dirOut.innerHTML = 'M3 FORWARD';
                 }
                 
                 console.log(l_dir);
@@ -126,6 +132,10 @@
             if(type.localeCompare('speed') == 0){
                 let l_speed = parseInt(obj.value);
                 document.getElementById('speed').innerHTML = obj.value;
+            }
+            if(type.localeCompare('distance') == 0){
+                let l_dis = parseInt(obj.value);
+                document.getElementById('dis').innerHTML = obj.value;
             }
         }
 
