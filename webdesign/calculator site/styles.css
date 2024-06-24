@@ -72,4 +72,9 @@ article button{
     text-decoration:none;
     font-size:large;
 }
+article button:hover{
+    background-color:gold;
+    color:white;
+
+}
 

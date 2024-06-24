@@ -9,21 +9,22 @@
         <header>
             <h1>Ohm's law calculator</h1>
             <ul>
-                <li class="l1"><a class="active" href="index.html">Resistance</a></li>
-                <li class="l2"><a href="voltage.html">Voltage</a></li>
-                <li class="l3"><a href="current.html">Current</a></li>
-                <li class="l4"><a href="power.html">Power</a></li>
+                <li class="l1"><a class="active" href="index.html">Ohm's law</a></li>
+                <li class="l2"><a href="opampGain.html">Op-amp Gain</a></li>
             </ul>
         </header>
         <article>
             <br><br>
             <label for="Voltage">Enter the voltage value:</label>
-            <input type="number" id="Voltage"><br></br>
+            <input type="number" id="Voltage"><p style="display:inline"><u> Volts</u></p><br></br>
             <label for="Current">Enter the current value:</label>
-            <input type="number" id="Current"><br></br>
+            <input type="number" id="Current"><p style="display:inline"><u> Amps</u></p><br></br>
             <label for="Resistance">The resistance value is:</label>
+            <input type="number" id="Resistance">
             <u><p id="Resistance" style="display:inline;"></p>
-            <p style="display:inline;"> Ohms</p></u> <br><Br>
+            <p style="display:inline;"> Ohms</p></u><br><br>
+            <label for="Power">The power is: </label>
+            <input type="number" id="Power"><p style="display:inline"><u> Watts</u></p><br><br>
             <button onclick="location.reload()">Calculate</button>
         </article>
         <footer>Made out of boredom 2024 :D</footer>
