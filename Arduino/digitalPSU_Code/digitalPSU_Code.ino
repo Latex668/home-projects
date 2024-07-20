@@ -40,7 +40,7 @@ void measure(){
   float I1Val = ((float)analogRead(A1)/1024)*AVcc;
   measurements[0] = V1Val/0.17812758906; // Measure value of V1
   // measurements[1] = (analogRead(A1)/1023)*AVcc* ((990 + 217)/217); // Measure value of V2
-  measurements[2] = (I1Val*(1000/2.30)); // Measure value of I1
+  measurements[2] = (I1Val*(1000/2.60)); // Measure value of I1
   // measurements[3] = (analogRead(A3)/1023)*AVcc; // Measure value of I2
 }
 void initLCD(){
