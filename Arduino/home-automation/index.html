@@ -3,10 +3,140 @@
     <title>Main Page</title>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <style>
+        body{
+            background-color: #000;
+            color: #fb7e14;
+            font-family:monospace;
+        }
+        .main_parent{
+            display:grid;
+            grid-template-rows: 15% 80% 5%;
+            grid-template-columns:10% 80% 10%;
+        }
+        .navbar{
+            grid-area:1/1/span 1/span 3;
+            background-color:#151515;
+            margin:5px 5px;
+            padding:5px 5px;
+            text-align: center;
+        }
+        footer{
+            height: 100%;
+            grid-area:3/1/span 1/span 3;
+            background-color:#151515;
+            margin: 5px 5px;
+            padding: 5px 5px;
+            text-align:center;
+        }
+        .GPIO_Parent{
+            margin:auto;
+            width:50%;
+            text-align:center;
+            grid-area:2/2/span 1/span 1;
+            display:grid;
+            grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+            grid-template-columns:25% 25%;
+        }
+        .c10{
+            grid-area:1/1/span 1/span 1;
+        }
         
+        .c11{
+            grid-area:2/1/span 1/span 1;
+        }
+        .c12{
+            grid-area:3/1/span 1/span 1;
+        }
+        .c13{
+            grid-area:4/1/span 1/span 1;
+        }
+        .c14{
+            grid-area:5/1/span 1/span 1;
+        }
+        .c15{
+            grid-area:6/1/span 1/span 1;
+        }
+        .c16{
+            grid-area:7/1/span 1/span 1;
+        }
+        .c17{
+            grid-area:8/1/span 1/span 1;
+        }
+        .c18{
+            grid-area:9/1/span 1/span 1;
+        }
+        .c19{
+            grid-area:10/1/span 1/span 1;
+        }
+        .c20{
+            grid-area:1/2/span 1/span 1;
+        }
+        .c21{
+            grid-area:2/2/span 1/span 1;
+        }
+        .c22{
+            grid-area:3/2/span 1/span 1;
+        }
+        .c23{
+            grid-area:4/2/span 1/span 1;
+        }
+        .c24{
+            grid-area:5/2/span 1/span 1;
+        }
+        .c25{
+            grid-area:6/2/span 1/span 1;
+        }
+        .c26{
+            grid-area:7/2/span 1/span 1;
+        }
+        .c27{
+            grid-area:8/2/span 1/span 1;
+        }
+        .c28{
+            grid-area:9/2/span 1/span 1;
+        }
+        .c29{
+            grid-area:10/2/span 1/span 1;
+        }
     </style>
 </head>
 
 <body>
+    <div class='main_parent'>
+        <div class='navbar'>
+            <h1>For now there's nothing here.</h1>
+        </div>
 
+        <div class='GPIO_Parent'>
+            <div class='c10'><h1>GPIO0:  <span id='GPIO0' >-</span></h1></div> <div class='c20'><h1>GPIO18: <span id='GPIO18'>-</span></h1></div>
+            <div class='c11'><h1>GPIO2:  <span id='GPIO2' >-</span></h1></div> <div class='c21'><h1>GPIO19: <span id='GPIO19'>-</span></h1></div>
+            <div class='c12'><h1>GPIO4:  <span id='GPIO4' >-</span></h1></div> <div class='c22'><h1>GPIO20: <span id='GPIO20'>-</span></h1></div>
+            <div class='c13'><h1>GPIO5:  <span id='GPIO5' >-</span></h1></div> <div class='c23'><h1>GPIO21: <span id='GPIO21'>-</span></h1></div>
+            <div class='c14'><h1>GPIO12: <span id='GPIO12'>-</span></h1></div> <div class='c24'><h1>GPIO22: <span id='GPIO22'>-</span></h1></div>
+            <div class='c15'><h1>GPIO13: <span id='GPIO13'>-</span></h1></div> <div class='c25'><h1>GPIO23: <span id='GPIO23'>-</span></h1></div>
+            <div class='c16'><h1>GPIO14: <span id='GPIO14'>-</span></h1></div> <div class='c26'><h1>GPIO24: <span id='GPIO24'>-</span></h1></div>
+            <div class='c17'><h1>GPIO15: <span id='GPIO15'>-</span></h1></div> <div class='c27'><h1>GPIO25: <span id='GPIO25'>-</span></h1></div>
+            <div class='c18'><h1>GPIO16: <span id='GPIO16'>-</span></h1></div> <div class='c28'><h1>GPIO26: <span id='GPIO26'>-</span></h1></div>
+            <div class='c19'><h1>GPIO17: <span id='GPIO17'>-</span></h1></div> <div class='c29'><h1>GPIO27: <span id='GPIO27'>-</span></h1></div>
+        </div>
+        <footer>
+            <h1>Made by Alex 2024</h1>
+        </footer>
+    </div>
 </body>
+<script>
+    var Socket;
+    const fuseInputs = [document.getElementById('GPIO0'), document.getElementById('GPIO2'),document.getElementById('GPIO4'), document.getElementById('GPIO5')]
+
+    function init(){
+            Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+            Socket.onmessage = function(event){
+                processCommand(event);
+            };
+        }
+        fuseInputs[0].innerHTML = 'ON';
+
+        window.onload = function(event){
+            init();
+        }
+</script>
