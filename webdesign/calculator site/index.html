@@ -22,9 +22,10 @@
             <label for="Resistance">The resistance value is:</label>
             <input type="number" id="Resistance">
             <u><p id="Resistance" style="display:inline;"></p>
-            <p style="display:inline;"> Ohms</p></u><br><br>
+            <p style="display:inline;"><button id="RUnit" onclick="ohmsLaw(resistance, voltage, current, RChanged+=1); console.log(RChanged);">Ohms</button></p></u><br><br>
             <label for="Power">The power is: </label>
-            <input type="number" id="Power"><p style="display:inline"><u> Watts</u></p><br><br>
+            <input type="number" id="Power"><p style="display:inline"><u> Watts</u></p>
+            <br><br>
             <button onclick="location.reload()">Calculate</button>
         </article>
         <footer>Made out of boredom 2024 :D</footer>
