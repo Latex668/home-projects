@@ -304,15 +304,15 @@ void ESP32PWM::attachPin(uint8_t pin) {
 
 	if (hasPwm(pin)) {
 		attach(pin);
-		bool success=true;
+		bool success;
 #ifdef ESP_ARDUINO_VERSION_MAJOR
 #if ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(3, 0, 0)
 		success=ledcAttach(pin, readFreq(), resolutionBits);
 #else
-		ledcAttachPin(pin, getChannel());
+		success=ledcAttachPin(pin, getChannel());
 #endif
 #else
-		ledcAttachPin(pin, getChannel());
+		success=ledcAttachPin(pin, getChannel());
 #endif
 		if(success)
 			return;

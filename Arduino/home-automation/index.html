@@ -140,7 +140,19 @@
                 processCommand(event);
             };
         }
-        fuseInputs[0].innerHTML = 'ON';
+        
+
+        function processCommand(event){
+            let obj = JSON.parse(event.data);
+            let type = obj.type;
+            if(type.localeCompare('fuseInputs') == 0){
+                let l_input = parseInt(obj.value);
+                
+                
+                console.log(l_input);
+            }
+
+        fuseInputs[0].innerHTML = 'OFF';
 
         window.onload = function(event){
             init();
