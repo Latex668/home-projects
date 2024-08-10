@@ -8,19 +8,19 @@ const char* SSID = "Alex-home";
 const char* PASS = "AlexIana2005";
 
 // Webpage for the site
-String webpage ="<!DOCTYPE html><head> <title>Main Page</title> <meta name='viewport' content='width=device-width, initial-scale=1.0'> <style> body{ background-color: #000; color: #fb7e14; font-family:monospace; font-size:0.8rem; margin: 0px; padding:0px; } .main_parent{ height:100vh; display:grid; grid-template-rows: 12% 80% 8%; grid-template-columns:10% 80% 10%; margin:0px; } .navbar{ grid-area:1/1/span 1/span 3; background-color:#151515; margin:0vw; padding:3vh 0vw; align-self: center; text-align: center; } footer{ margin: 0px; grid-area:3/1/span 1/span 3; background-color:#151515; text-align:center; } .GPIO_Parent{ align-items: center; justify-content: center; margin:auto; width:100%; text-align:center; grid-area:2/2/span 1/span 1; display:grid; grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%; grid-template-columns:25% 25%; } .c10{ grid-area:1/1/span 1/span 1; } .c11{ grid-area:2/1/span 1/span 1; } .c12{ grid-area:3/1/span 1/span 1; } .c13{ grid-area:4/1/span 1/span 1; } .c14{ grid-area:5/1/span 1/span 1; } .c15{ grid-area:6/1/span 1/span 1; } .c16{ grid-area:7/1/span 1/span 1; } .c17{ grid-area:8/1/span 1/span 1; } .c18{ grid-area:9/1/span 1/span 1; } .c19{ grid-area:10/1/span 1/span 1; } .c20{ grid-area:1/2/span 1/span 1; } .c21{ grid-area:2/2/span 1/span 1; } .c22{ grid-area:3/2/span 1/span 1; } .c23{ grid-area:4/2/span 1/span 1; } .c24{ grid-area:5/2/span 1/span 1; } .c25{ grid-area:6/2/span 1/span 1; } .c26{ grid-area:7/2/span 1/span 1; } .c27{ grid-area:8/2/span 1/span 1; } .c28{ grid-area:9/2/span 1/span 1; } .c29{ grid-area:10/2/span 1/span 1; } </style></head><body> <div class='main_parent'> <div class='navbar'> <h1>For now there's nothing here.</h1> </div> <div class='GPIO_Parent'> <div class='c10'><h1>GPIO0: <span id='GPIO0' >-</span></h1></div> <div class='c20'><h1>GPIO18: <span id='GPIO18'>-</span></h1></div> <div class='c11'><h1>GPIO2: <span id='GPIO2' >-</span></h1></div> <div class='c21'><h1>GPIO19: <span id='GPIO19'>-</span></h1></div> <div class='c12'><h1>GPIO4: <span id='GPIO4' >-</span></h1></div> <div class='c22'><h1>GPIO20: <span id='GPIO20'>-</span></h1></div> <div class='c13'><h1>GPIO5: <span id='GPIO5' >-</span></h1></div> <div class='c23'><h1>GPIO21: <span id='GPIO21'>-</span></h1></div> <div class='c14'><h1>GPIO12: <span id='GPIO12'>-</span></h1></div> <div class='c24'><h1>GPIO22: <span id='GPIO22'>-</span></h1></div> <div class='c15'><h1>GPIO13: <span id='GPIO13'>-</span></h1></div> <div class='c25'><h1>GPIO23: <span id='GPIO23'>-</span></h1></div> <div class='c16'><h1>GPIO14: <span id='GPIO14'>-</span></h1></div> <div class='c26'><h1>GPIO24: <span id='GPIO24'>-</span></h1></div> <div class='c17'><h1>GPIO15: <span id='GPIO15'>-</span></h1></div> <div class='c27'><h1>GPIO25: <span id='GPIO25'>-</span></h1></div> <div class='c18'><h1>GPIO16: <span id='GPIO16'>-</span></h1></div> <div class='c28'><h1>GPIO26: <span id='GPIO26'>-</span></h1></div> <div class='c19'><h1>GPIO17: <span id='GPIO17'>-</span></h1></div> <div class='c29'><h1>GPIO27: <span id='GPIO27'>-</span></h1></div> </div> <footer> <h1>Made by Alex 2024</h1> </footer> </div></body><script> var Socket; const fuseInputs = [document.getElementById('GPIO0'), document.getElementById('GPIO2'),document.getElementById('GPIO4'), document.getElementById('GPIO5')] function init(){ Socket = new WebSocket('ws://' + window.location.hostname + ':81/'); Socket.onmessage = function(event){ processCommand(event); }; } fuseInputs[0].innerHTML = 'OFF'; window.onload = function(event){ init(); }</script>";
+String webpage ="<!DOCTYPE html><html> <head> <title>Main Page</title> <meta name='viewport' content='width=device-width, initial-scale=1.0'> <style> body{ background-color: #000; color: #fb7e14; font-family:monospace; font-size:0.8rem; margin: 0px; padding:0px; } .main_parent{ height:100vh; display:grid; grid-template-rows: 12% 80% 8%; grid-template-columns:10% 80% 10%; margin:0px; } .navbar{ grid-area:1/1/span 1/span 3; background-color:#151515; margin:0vw; padding:3vh 0vw; align-self: center; text-align: center; } footer{ margin: 0px; grid-area:3/1/span 1/span 3; background-color:#151515; text-align:center; } .GPIO_Parent{ align-items: center; justify-content: center; margin:auto; width:100%; text-align:center; grid-area:2/2/span 1/span 1; display:grid; grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%; grid-template-columns:25% 25%; } .c10{ grid-area:1/1/span 1/span 1; } .c11{ grid-area:2/1/span 1/span 1; } .c12{ grid-area:3/1/span 1/span 1; } .c13{ grid-area:4/1/span 1/span 1; } .c14{ grid-area:5/1/span 1/span 1; } .c15{ grid-area:6/1/span 1/span 1; } .c16{ grid-area:7/1/span 1/span 1; } .c17{ grid-area:8/1/span 1/span 1; } .c18{ grid-area:9/1/span 1/span 1; } .c19{ grid-area:10/1/span 1/span 1; } .c20{ grid-area:1/2/span 1/span 1; } .c21{ grid-area:2/2/span 1/span 1; } .c22{ grid-area:3/2/span 1/span 1; } .c23{ grid-area:4/2/span 1/span 1; } .c24{ grid-area:5/2/span 1/span 1; } .c25{ grid-area:6/2/span 1/span 1; } .c26{ grid-area:7/2/span 1/span 1; } .c27{ grid-area:8/2/span 1/span 1; } .c28{ grid-area:9/2/span 1/span 1; } .c29{ grid-area:10/2/span 1/span 1; } </style> </head> <body> <div class='main_parent'> <div class='navbar'> <h1>For now there's nothing here.</h1> </div> <div class='GPIO_Parent'> <div class='c10'><h1>GPIO0: <span id='GPIO0' >-</span></h1></div> <div class='c20'><h1>GPIO18: <span id='GPIO18'>-</span></h1></div> <div class='c11'><h1>GPIO2: <span id='GPIO2' >-</span></h1></div> <div class='c21'><h1>GPIO19: <span id='GPIO19'>-</span></h1></div> <div class='c12'><h1>GPIO4: <span id='GPIO4' >-</span></h1></div> <div class='c22'><h1>GPIO20: <span id='GPIO20'>-</span></h1></div> <div class='c13'><h1>GPIO5: <span id='GPIO5' >-</span></h1></div> <div class='c23'><h1>GPIO21: <span id='GPIO21'>-</span></h1></div> <div class='c14'><h1>GPIO12: <span id='GPIO12'>-</span></h1></div> <div class='c24'><h1>GPIO22: <span id='GPIO22'>-</span></h1></div> <div class='c15'><h1>GPIO13: <span id='GPIO13'>-</span></h1></div> <div class='c25'><h1>GPIO23: <span id='GPIO23'>-</span></h1></div> <div class='c16'><h1>GPIO14: <span id='GPIO14'>-</span></h1></div> <div class='c26'><h1>GPIO24: <span id='GPIO24'>-</span></h1></div> <div class='c17'><h1>GPIO15: <span id='GPIO15'>-</span></h1></div> <div class='c27'><h1>GPIO25: <span id='GPIO25'>-</span></h1></div> <div class='c18'><h1>GPIO16: <span id='GPIO16'>-</span></h1></div> <div class='c28'><h1>GPIO26: <span id='GPIO26'>-</span></h1></div> <div class='c19'><h1>GPIO17: <span id='GPIO17'>-</span></h1></div> <div class='c29'><h1>GPIO27: <span id='GPIO27'>-</span></h1></div> </div> <footer> <h1>Made by Alex 2024</h1> </footer> </div> </body> <script> var Socket; const fuseInputs = [document.getElementById('GPIO0'), document.getElementById('GPIO2'),document.getElementById('GPIO4'), document.getElementById('GPIO5'),document.getElementById('GPIO12'), document.getElementById('GPIO13'),document.getElementById('GPIO14'), document.getElementById('GPIO15')] function init(){ Socket = new WebSocket('ws://' + window.location.hostname + ':81/'); Socket.onmessage = function(event){ processCommand(event); }; } function processCommand(event){ let obj = JSON.parse(event.data); let type = obj.type; let number = obj.number; if(type.localeCompare('fuse') == 0){ let l_state = parseInt(obj.value); let l_num = parseInt(obj.number); console.log(l_state); switch(l_num){ case 0: fuseInputs[0].innerHTML = l_state; break; case 1: fuseInputs[1].innerHTML = l_state; break; case 2: fuseInputs[2].innerHTML = l_state; break; case 3: fuseInputs[3].innerHTML = l_state; break; case 4: fuseInputs[4].innerHTML = l_state; break; case 5: fuseInputs[5].innerHTML = l_state; break; case 6: fuseInputs[6].innerHTML = l_state; break; case 7: fuseInputs[7].innerHTML = l_state; break; } console.log(l_state); } } window.onload = function(event){ init(); } </script></html>";
 
 WebServer server(80); // Start server at port 80
 WebSocketsServer webSocket = WebSocketsServer(81); // Start ws server at port 81
 
 int fuseInputs[] = {0, 2, 4, 5, 12, 13, 14, 15};
-bool fuseState[7];
+int fuseState[7];
 
 void setup(){
     Serial.begin(115200);
 
-    for(int i; i<8; i++){
-      pinMode(fuseInputs[i], INPUT_PULLDOWN);
+    for(int i=0; i<8; i++){
+      pinMode(fuseInputs[i], INPUT_PULLUP);
     }
 
     WiFi.begin(SSID, PASS);
@@ -44,18 +44,28 @@ void setup(){
 void loop(){
     server.handleClient();
     webSocket.loop();
+    readFuses();
     
 }
 
-void sendJSON(String type, String value, String state) {
+
+void sendJSON(String type, String number,String value) {
     String jsonString = "";
     StaticJsonDocument<400> doc;
     JsonObject obj = doc.to<JsonObject>();
     obj["type"] = type;
     obj["value"] = value;
-    obj["state"] = state;
+    obj["number"] = number;
     serializeJson(doc, jsonString);
     webSocket.broadcastTXT(jsonString);
+}
+
+void readFuses(){
+  fuseState[1] = digitalRead(fuseInputs[1]);
+  sendJSON("fuse", String(1), String(fuseState[1]));
+  Serial.println(fuseState[1]);
+  delay(150);
+
 }
 
 void webSocketEvent(byte num, WStype_t type, uint8_t* payload, size_t length) { 
@@ -75,11 +85,9 @@ void webSocketEvent(byte num, WStype_t type, uint8_t* payload, size_t length) {
       } else {                  
         const char* type = doc["type"]; 
         const int value = doc["value"];
-        const char* state = doc["state"];
-        if(String(type) == "fuseInputs"{
-          
-        })
+        
         }
+      Serial.println("");
       break;
   }
 }
