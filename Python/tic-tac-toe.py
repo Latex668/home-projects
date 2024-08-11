@@ -30,7 +30,7 @@ while running:
             elif (isOccupied[num] == '') and (won == False):
                 isOccupied[num] = 'O'
                 lastPlaced = 'O'
-            return lastPlaced
+        return lastPlaced
     lastPlaced = AI(lastPlaced)
 
     for event in pygame.event.get(): # For any event that happens in game, check any of the possibilities
