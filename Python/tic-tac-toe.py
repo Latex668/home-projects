@@ -22,26 +22,15 @@ while running:
     screen.fill((10,10,10)) 
     mouse_pos = pygame.mouse.get_pos()
 
-    def AI(lastPlaced):
-        if lastPlaced == 'X':
-            num = randrange(0,8)
-            if isOccupied[num] != '':
-                num = randrange(8)
-            elif (isOccupied[num] == '') and (won == False):
-                isOccupied[num] = 'O'
-                lastPlaced = 'O'
-        return lastPlaced
-    lastPlaced = AI(lastPlaced)
-
     for event in pygame.event.get(): # For any event that happens in game, check any of the possibilities
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONUP:
             for i in range(9):
                 if Grid_coords[i].collidepoint(mouse_pos): # If the grid coords collide with the mouse click, check which item was placed last and if the grid is occupied
-                    if (lastPlaced != 'X') and isOccupied[i] == '' and won != True:
-                        isOccupied[i] = 'X'
-                        lastPlaced = 'X'
+                    if (lastPlaced == 'X') and isOccupied[i] == '' and won != True:
+                        isOccupied[i] = 'O'
+                        lastPlaced = 'O'
                     # if (lastPlaced != 'O') and isOccupied[i] == '' and won != True:
                     #     isOccupied[i] = 'O'
                     #     lastPlaced = 'O'
@@ -55,6 +44,16 @@ while running:
     #                         if x == 7:
     #                             return True
     
+    def AI(lastPlaced):
+        if lastPlaced != 'X':
+            num = randrange(0,8)
+            if isOccupied[num] != '':
+                num = randrange(8)
+            elif (isOccupied[num] == '') and (won == False):
+                isOccupied[num] = 'X'
+                lastPlaced = 'X'
+        return lastPlaced
+    lastPlaced = AI(lastPlaced)
         
     def isWon(isOccupied):
             global won
@@ -76,6 +75,14 @@ while running:
             return won 
             
 
+    Game_Border = pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH,SC_HEIGHT)),10)
+    Grid = [pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH,SC_HEIGHT-SC_HEIGHT/3)),10),pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH,SC_HEIGHT/3)),10),pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH-SC_WIDTH/3,SC_HEIGHT)),10), pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH/3,SC_HEIGHT)),10)]
+    # This long ass list just stored the coordonates to every single grid, couldn't find a better way at the time.
+    Grid_coords =  [pygame.Rect((0,0),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)),pygame.Rect((SC_WIDTH-SC_WIDTH*2/3,0),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)), pygame.Rect((2*(SC_WIDTH-SC_WIDTH*2/3),0),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)),
+                    pygame.Rect((0,SC_HEIGHT-SC_HEIGHT*2/3),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)),pygame.Rect((SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)), pygame.Rect((2*(SC_WIDTH-SC_WIDTH*2/3),SC_HEIGHT-SC_HEIGHT*2/3),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)),
+                    pygame.Rect((0,2*(SC_HEIGHT-SC_HEIGHT*2/3)),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)),pygame.Rect((SC_WIDTH-SC_WIDTH*2/3,2*(SC_HEIGHT-SC_HEIGHT*2/3)),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)), pygame.Rect((2*(SC_WIDTH-SC_WIDTH*2/3),2*(SC_HEIGHT-SC_HEIGHT*2/3)),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3))]
+    won = isWon(isOccupied); # Send which areas are occupied to the isWon function.
+
     def drawTXT(txt, fontname, fontSize, txtColor, x, y): # function to render text to screen, starts by taking the font itself and rendering it, then displaying
         font = pygame.font.SysFont(fontname, fontSize)
         img = font.render(txt, True, txtColor)
@@ -89,13 +96,7 @@ while running:
             x,y = Grid_coords[z].center
             drawTXT("O", 'monospace', 180, "Pink",x-80,y-120)
 
-    Game_Border = pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH,SC_HEIGHT)),10)
-    Grid = [pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH,SC_HEIGHT-SC_HEIGHT/3)),10),pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH,SC_HEIGHT/3)),10),pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH-SC_WIDTH/3,SC_HEIGHT)),10), pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH/3,SC_HEIGHT)),10)]
-    # This long ass list just stored the coordonates to every single grid, couldn't find a better way at the time.
-    Grid_coords =  [pygame.Rect((0,0),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)),pygame.Rect((SC_WIDTH-SC_WIDTH*2/3,0),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)), pygame.Rect((2*(SC_WIDTH-SC_WIDTH*2/3),0),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)),
-                    pygame.Rect((0,SC_HEIGHT-SC_HEIGHT*2/3),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)),pygame.Rect((SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)), pygame.Rect((2*(SC_WIDTH-SC_WIDTH*2/3),SC_HEIGHT-SC_HEIGHT*2/3),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)),
-                    pygame.Rect((0,2*(SC_HEIGHT-SC_HEIGHT*2/3)),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)),pygame.Rect((SC_WIDTH-SC_WIDTH*2/3,2*(SC_HEIGHT-SC_HEIGHT*2/3)),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)), pygame.Rect((2*(SC_WIDTH-SC_WIDTH*2/3),2*(SC_HEIGHT-SC_HEIGHT*2/3)),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3))]
-    won = isWon(isOccupied); # Send which areas are occupied to the isWon function.
+    
 
     pygame.display.flip()
 
