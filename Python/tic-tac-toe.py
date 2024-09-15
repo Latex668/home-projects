@@ -17,9 +17,15 @@ isOccupied =   ['','','', # 3x3 list to store if any of the grids are occupied a
 lastPlaced = ''; # stores the last placed element
 won = False
 
+def drawGrid():
+    for x in range(0,SC_WIDTH,int(SC_WIDTH/3)):
+        for y in range(0,SC_HEIGHT,int(SC_HEIGHT/3)):
+            rect = pygame.Rect(x,y,int(SC_WIDTH/3),int(SC_HEIGHT/3))
+            pygame.draw.rect(screen, 'pink', rect, 8)
 
 while running:
-    screen.fill((10,10,10)) 
+    screen.fill((10,10,10))
+    drawGrid()
     mouse_pos = pygame.mouse.get_pos()
 
     for event in pygame.event.get(): # For any event that happens in game, check any of the possibilities
@@ -76,7 +82,6 @@ while running:
             
 
     Game_Border = pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH,SC_HEIGHT)),10)
-    Grid = [pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH,SC_HEIGHT-SC_HEIGHT/3)),10),pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH,SC_HEIGHT/3)),10),pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH-SC_WIDTH/3,SC_HEIGHT)),10), pygame.draw.rect(screen, "pink",((0,0),(SC_WIDTH/3,SC_HEIGHT)),10)]
     # This long ass list just stored the coordonates to every single grid, couldn't find a better way at the time.
     Grid_coords =  [pygame.Rect((0,0),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)),pygame.Rect((SC_WIDTH-SC_WIDTH*2/3,0),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)), pygame.Rect((2*(SC_WIDTH-SC_WIDTH*2/3),0),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)),
                     pygame.Rect((0,SC_HEIGHT-SC_HEIGHT*2/3),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)),pygame.Rect((SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)), pygame.Rect((2*(SC_WIDTH-SC_WIDTH*2/3),SC_HEIGHT-SC_HEIGHT*2/3),(SC_WIDTH-SC_WIDTH*2/3,SC_HEIGHT-SC_HEIGHT*2/3)),

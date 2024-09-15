@@ -41,6 +41,10 @@ const unsigned char* epd_bitmap_allArray[3] = {
 	epd_bitmap_skull
 };
 
+String data;
+String KSValue;
+String HValue;
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
@@ -50,13 +54,31 @@ void setup() {
   u8g2.setFont(u8g2_font_t0_11b_tr);
 }
 
+void readData(){
+  while(!Serial.available());
+  data = Serial.readString();
+  if(data.startsWith("h")){
+    HValue = data.substring(1,data.length());
+  }
+  if(data.startsWith("k")){
+    KSValue = data.substring(1,data.length());
+  }
+}
+
 void loop() {
   // put your main code here, to run repeatedly:
+  readData();
   u8g2.clearBuffer();
-  u8g2.setCursor(0,10);
-  u8g2.drawXBMP(64,32,26,24,epd_bitmap_skull);
-  u8g2.drawXBMP(0,0,26,24,epd_bitmap_killstreak_icon);
-  u8g2.drawXBMP(0,30,26,24,epd_bitmap_health);
+  u8g2.drawXBMP(10,37,26,24,epd_bitmap_health);
+  u8g2.drawXBMP(80,37,26,24,epd_bitmap_killstreak_icon);
+  u8g2.setCursor(90,27);
+  u8g2.print(KSValue);
+  u8g2.setCursor(10,27);
+  u8g2.print(HValue);
   u8g2.sendBuffer();
-  delay(100);
+  // u8g2.clearBuffer();
+  // u8g2.setCursor(0,10);
+  // u8g2.drawXBMP(64,32,26,24,epd_bitmap_skull);
+  // u8g2.sendBuffer();
+  delay(20);
 }
