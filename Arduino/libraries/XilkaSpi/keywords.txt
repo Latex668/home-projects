@@ -1,0 +1,36 @@
+#######################################
+# Syntax Coloring Map For XilkaSpi
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Xilka	KEYWORD1
+SpiSoftWriter KEYWORD1
+SpiSoftReadWriter KEYWORD1
+SpiFRam	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+read	KEYWORD2
+write	KEYWORD2
+enableWrite	KEYWORD2
+disableWrite	KEYWORD2
+writeFloat	KEYWORD2
+readFloat KEYWORD2
+getDeviceId KEYWORD2
+getStatusRegister KEYWORD2
+setStatusRegister KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
