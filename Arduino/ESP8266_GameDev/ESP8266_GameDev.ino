@@ -15,7 +15,8 @@ int gridSize = 8;
 int buttons[4] = {2,5,4,0}; // U,L,D,R; D0,D1,D2,D3
 int butStates[4];
 #define BAT_RESET 15
-unsigned long timeSinceRST;
+unsigned long timeSinceRST = 0; // Time since last reset for bat charge/discharge module
+unsigned long gameLoopRST = 0;
 
 #define SNAKE_MAX_LEN 64
 int snake_x[SNAKE_MAX_LEN];
@@ -98,6 +99,7 @@ static const unsigned char snake [] PROGMEM = {
 
 void setup() {
   // put your setup code here, to run once:
+  Serial.begin(115200);
   Wire.begin(14,12);
   if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
       Serial.println(F("SSD1306 allocation failed"));
@@ -106,7 +108,6 @@ void setup() {
     drawSplashScreen();
   display.clearDisplay();
   pinMode(BAT_RESET,OUTPUT);
-  digitalWrite(BAT_RESET,1);
   for(int i=0;i<4;i++){
     pinMode(buttons[i],INPUT_PULLUP);
   }
@@ -124,76 +125,78 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  timeSinceRST = millis();
-  if(timeSinceRST == 20000){
-    digitalWrite(BAT_RESET, 0);
-    timeSinceRST = 0;
-  }
-  delay(100);
-  for(int j=0; j<=3; j++){
-  butStates[j] = digitalRead(buttons[j]);
-  }
-    
-  if((butStates[3] == 0) && (snake_dir != 2)){
-    snake_dir = 0;
-  }else if((butStates[1] == 0) && (snake_dir != 0)){
-    snake_dir = 2;
-  }else if((butStates[2] == 0) && (snake_dir != 1)){
-    snake_dir = 3;
-  }else if((butStates[0] == 0) && (snake_dir != 3)){
-    snake_dir = 1;
-  }
-  for(int i = snake_len-1; i > 0; i--){
-    snake_x[i] = snake_x[i-1];
-    snake_y[i] = snake_y[i-1];
-  }
-  switch(snake_dir){
-    case 0:
-      snake_x[0]++;
-      break;
-    case 1:
-      snake_y[0]--;
-      break;
-    case 2:
-      snake_x[0]--;
-      break;
-    case 3:
-      snake_y[0]++;
-      break;
-  }
+  unsigned long currentTime = millis();
+  if(currentTime - gameLoopRST >= 120){
 
-  if(snake_x[0] < 0){
-    snake_x[0] = SC_W/gridSize-1;
-  }else if(snake_x[0] >= SC_W/gridSize){
-    snake_x[0] = 0;
-  }
+    gameLoopRST = currentTime;
 
-  if(snake_y[0] < 0){
-    snake_y[0] = SC_H/gridSize-1;
-  }else if(snake_y[0] >= SC_H/gridSize){
-    snake_y[0] = 0;
-  }
-
-  // eat apple
-  if(snake_x[0] == food_x && snake_y[0] == food_y){ // check for collision w/ food object
-    if(snake_len < SNAKE_MAX_LEN){
-      snake_len++;
+    for(int j=0; j<=3; j++){
+    butStates[j] = digitalRead(buttons[j]);
     }
-    score += 10;
-    food_x = random(0, SC_W/gridSize);
-    food_y = random(0,SC_H/gridSize);
-  }
-  for(int k=1; k < snake_len; k++){ // Check for snake collision
-    if(snake_x[0] == snake_x[k] && snake_y[0] == snake_y[k]){
-      gameOver();
-      Reset();
+      
+    if((butStates[3] == 0) && (snake_dir != 2)){
+      snake_dir = 0;
+    }else if((butStates[1] == 0) && (snake_dir != 0)){
+      snake_dir = 2;
+    }else if((butStates[2] == 0) && (snake_dir != 1)){
+      snake_dir = 3;
+    }else if((butStates[0] == 0) && (snake_dir != 3)){
+      snake_dir = 1;
     }
+    for(int i = snake_len-1; i > 0; i--){
+      snake_x[i] = snake_x[i-1];
+      snake_y[i] = snake_y[i-1];
+    }
+    switch(snake_dir){
+      case 0:
+        snake_x[0]++;
+        break;
+      case 1:
+        snake_y[0]--;
+        break;
+      case 2:
+        snake_x[0]--;
+        break;
+      case 3:
+        snake_y[0]++;
+        break;
+    }
+
+    if(snake_x[0] < 0){
+      snake_x[0] = SC_W/gridSize-1;
+    }else if(snake_x[0] >= SC_W/gridSize){
+      snake_x[0] = 0;
+    }
+
+    if(snake_y[0] < 0){
+      snake_y[0] = SC_H/gridSize-1;
+    }else if(snake_y[0] >= SC_H/gridSize){
+      snake_y[0] = 0;
+    }
+
+    // eat apple
+    if(snake_x[0] == food_x && snake_y[0] == food_y){ // check for collision w/ food object
+      if(snake_len < SNAKE_MAX_LEN){
+        snake_len++;
+      }
+      score += 10;
+      food_x = random(0, SC_W/gridSize);
+      food_y = random(0,SC_H/gridSize);
+    }
+    for(int k=1; k < snake_len; k++){ // Check for snake collision
+      if(snake_x[0] == snake_x[k] && snake_y[0] == snake_y[k]){
+        gameOver();
+        Reset();
+      }
+    }
+    display.clearDisplay();
+    drawSnake();
+    drawFood();
+    drawGrid();
+    display.display();
+
   }
-  display.clearDisplay();
-  drawSnake();
-  drawFood();
-  drawGrid();
-  display.display();
+  
 }
 
 void drawSplashScreen(){
