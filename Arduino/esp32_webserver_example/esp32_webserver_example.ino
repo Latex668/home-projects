@@ -1,59 +1,92 @@
-/*
- * This ESP32 code is created by esp32io.com
- *
- * This ESP32 code is released in the public domain
- *
- * For more detail (instruction and wiring diagram), visit https://esp32io.com/tutorials/esp32-web-server-multiple-pages
- */
-
 #include <WiFi.h>
-#include <ESPAsyncWebServer.h>
+#include <WebServer.h>
+#include <WebSocketsServer.h>
+#include <ArduinoJson.h>
 #include "index.h"
+#include "page2.h"
 
-#define LED_PIN 18  // ESP32 pin GPIO18 connected to LED
+const char* ssid = "Alex-home";
+const char* password = "AlexIana2005";
 
-const char *ssid = "Alex-home";     // CHANGE IT
-const char *password = "AlexIana2005";  // CHANGE IT
+WebServer server(80);
+WebSocketsServer ws = WebSocketsServer(81);
 
-AsyncWebServer server(80);
+#define INTERVAL 1000
+unsigned long previousMillis = 0;
 
-int LED_state = LOW;
-
-int getRandomNumber(){
-  int number1 = random(0,255);
+int getRandomNumber() {
+  int number1 = random(0, 255);
   return number1;
+}
+
+void wsEvent(byte num, WStype_t type, uint8_t* payload, size_t len) {
+  switch (type) {
+    case WStype_DISCONNECTED:
+      Serial.println("Client " + String(num) + "disconnected.");
+      break;
+    case WStype_CONNECTED:
+      Serial.println("Client " + String(num) + " connected.");
+      break;
+    case WStype_TEXT:
+      StaticJsonDocument<200> doc;
+      DeserializationError error = deserializeJson(doc, payload);
+      if (error) {
+        Serial.print(F("deserializeJson() failed: "));
+        Serial.println(error.f_str());
+        return;
+      } else {
+        const int l_GPIO = doc["GPIO"];
+        const bool l_GPIOState = doc["GPIOState"];
+        Serial.println(String(l_GPIO) + " " + String(l_GPIOState));
+        pinMode(l_GPIO, OUTPUT);
+        digitalWrite(l_GPIO, l_GPIOState);
+      }
+      Serial.println("");
+      break;
+  }
 }
 
 void setup() {
   Serial.begin(9600);
-  pinMode(LED_PIN, OUTPUT);
 
-  // Connect to Wi-Fi
   WiFi.begin(ssid, password);
   Serial.println("Connecting to WiFi with ssid " + String(ssid));
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
     delay(1000);
   }
-
+  pinMode(13, INPUT_PULLUP);
   Serial.print("Connected to WiFi with IP adrdress: ");
   Serial.println(WiFi.localIP());
 
   // Serve the specified HTML pages
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-    Serial.println("Web Server: home page");
-    String html = HTML_CONTENT_HOME;  // Use the HTML content from the index.h file
-    request->send(200, "text/html", html);
+  server.on("/", []() {
+    server.send(200, "text/html", String(homepage));
   });
-
-  server.on("/Number", HTTP_GET, [](AsyncWebServerRequest* request){
-    String number = String(getRandomNumber());
-    request->send(200,"text/plain", number);
+  server.on("/site2", []() {
+    server.send(200, "text/html", String(site2));
   });
-
   server.begin();
+
+  ws.begin();
+  ws.onEvent(wsEvent);
 }
 
 void loop() {
   // Your code can go here or be empty; the server is handled asynchronously
+  server.handleClient();
+  ws.loop();
+
+  unsigned long time = millis();
+  if (time - previousMillis >= INTERVAL) {
+    String jsonString = "";
+    StaticJsonDocument<200> doc;
+    JsonObject object = doc.to<JsonObject>();
+    object["num1"] = getRandomNumber();
+    object["but"] = !digitalRead(13);
+    serializeJson(doc, jsonString);
+    ws.broadcastTXT(jsonString);
+
+    previousMillis = time;
+  }
 }

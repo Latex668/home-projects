@@ -1,5 +1,5 @@
 
-const char* homepage = R"=====(
+const char* site2 = R"=====(
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,15 +22,14 @@ const char* homepage = R"=====(
         }
     </style>
     <body>
-        <h1>Random number generator</h1>
+        <header>
+        <h1 style="text-align: left;">Test site, nothing else.</h1>
         <ul class="navbar">
             <li><button onclick="redirectPage(0)">Index</button></li>
             <li><button onclick="redirectPage(1)">Site 2</button></li>
         </ul>   
-        <p>Random number is: <span id='n1'>%number%</span></p>
-        <p>Button1 state is: <span id="b1">%value%</span></p>
-        <button class="but1" onclick="butPres(1)">Turn on LED</button>
-    
+
+        </header>
     </body>
     <script>
         var Socket;
@@ -41,7 +40,7 @@ const char* homepage = R"=====(
             processCommand(event);
          };
         }
-
+        let state = false;
         function redirectPage(pageNum){
             if(pageNum == 0){
                 window.location.href ="http://" + window.location.hostname;
@@ -49,8 +48,6 @@ const char* homepage = R"=====(
                 window.location.href ="http://" + window.location.hostname + "/site2";
             }
         }
-
-        let state = false;
         function butPres(butNum){
             state = !state;
             let msg = {
