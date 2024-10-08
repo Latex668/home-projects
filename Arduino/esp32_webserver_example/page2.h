@@ -1,4 +1,3 @@
-
 const char* site2 = R"=====(
 <!DOCTYPE html>
 <html>
@@ -27,11 +26,11 @@ const char* site2 = R"=====(
         <ul class="navbar">
             <li><button onclick="redirectPage(0)">Index</button></li>
             <li><button onclick="redirectPage(1)">Site 2</button></li>
-        </ul>   
+        </ul>
 
         </header>
     </body>
-    <script>
+            <script>
         var Socket;
 
         function init(){
@@ -40,7 +39,7 @@ const char* site2 = R"=====(
             processCommand(event);
          };
         }
-        let state = false;
+
         function redirectPage(pageNum){
             if(pageNum == 0){
                 window.location.href ="http://" + window.location.hostname;
@@ -48,6 +47,8 @@ const char* site2 = R"=====(
                 window.location.href ="http://" + window.location.hostname + "/site2";
             }
         }
+
+        let state = false;
         function butPres(butNum){
             state = !state;
             let msg = {
@@ -66,5 +67,5 @@ const char* site2 = R"=====(
             init();
         }
      </script>
-</html>
+ </html>
 )=====";

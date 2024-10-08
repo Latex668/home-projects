@@ -2,8 +2,12 @@
 #include <WebServer.h>
 #include <WebSocketsServer.h>
 #include <ArduinoJson.h>
+#include <ESPmDNS.h>
+
 #include "index.h"
 #include "page2.h"
+
+const char* host = "esp32";
 
 const char* ssid = "Alex-home";
 const char* password = "AlexIana2005";
@@ -55,6 +59,15 @@ void setup() {
     Serial.print(".");
     delay(1000);
   }
+  if(!MDNS.begin(host)){
+    //http://<hostname>.local
+    Serial.println("Error setting up mDNS responder!");
+    while(1){
+      delay(1000);
+    }
+  }
+  Serial.println("mDns responder started");
+
   pinMode(13, INPUT_PULLUP);
   Serial.print("Connected to WiFi with IP adrdress: ");
   Serial.println(WiFi.localIP());
@@ -78,7 +91,7 @@ void loop() {
   ws.loop();
 
   unsigned long time = millis();
-  if (time - previousMillis >= INTERVAL) {
+  if (time - previousMillis >= INTERVAL)  {
     String jsonString = "";
     StaticJsonDocument<200> doc;
     JsonObject object = doc.to<JsonObject>();

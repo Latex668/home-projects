@@ -26,11 +26,11 @@ const char* homepage = R"=====(
         <ul class="navbar">
             <li><button onclick="redirectPage(0)">Index</button></li>
             <li><button onclick="redirectPage(1)">Site 2</button></li>
-        </ul>   
+        </ul>
         <p>Random number is: <span id='n1'>%number%</span></p>
         <p>Button1 state is: <span id="b1">%value%</span></p>
         <button class="but1" onclick="butPres(1)">Turn on LED</button>
-    
+
     </body>
     <script>
         var Socket;
