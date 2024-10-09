@@ -4,10 +4,12 @@
 #include <ArduinoJson.h>
 #include "index.h"
 #include "page2.h"
+#include <ESPmDNS.h>
 
-const char* ssid = "Alex-home";
-const char* password = "AlexIana2005";
 
+const char* ssid = "ALEX HOTSPOT";
+const char* password = "Kayter123";
+const char* host = "ESP32";
 WebServer server(80);
 WebSocketsServer ws = WebSocketsServer(81);
 
@@ -55,9 +57,19 @@ void setup() {
     Serial.print(".");
     delay(1000);
   }
+
   pinMode(13, INPUT_PULLUP);
   Serial.print("Connected to WiFi with IP adrdress: ");
   Serial.println(WiFi.localIP());
+
+  if (!MDNS.begin(host)) {   // Set the hostname to "esp32.local"
+    Serial.println("Error setting up MDNS responder!");
+    while(1) {
+      delay(1000);
+    }
+  }
+  Serial.println("mDNS responder started");
+
 
   // Serve the specified HTML pages
   server.on("/", []() {
