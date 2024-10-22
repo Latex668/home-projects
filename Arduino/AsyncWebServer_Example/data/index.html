@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Example code!</title>
+    <script type="text/javascript" src="index.js"></script>
+  </head>
+  <style>
+    body {
+      background-color: #1f1f1f;
+      color: #ffd900;
+    }
+    .but1 {
+      border: none;
+      color: #ffd900;
+      padding: 5px 5px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      cursor: pointer;
+      background-color: #151515;
+    }
+  </style>
+  <body>
+    <h1>Random number generator</h1>
+    <ul class="navbar">
+      <li><button onclick="redirectPage(0)">Index</button></li>
+      <li><button onclick="redirectPage(1)">Site 2</button></li>
+    </ul>
+    <p>Random number is: <span id="n1">%number%</span></p>
+    <p>Button1 state is: <span id="b1">%value%</span></p>
+    <button class="but1" onclick="butPres(1)">Turn on LED</button>
+  </body>
+</html>

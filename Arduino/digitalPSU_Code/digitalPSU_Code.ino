@@ -16,9 +16,9 @@ Adafruit_ST7735 lcd = Adafruit_ST7735(CS, DC, RST);
 
 // Values of voltages and currents measured
 float measurements[] = {0,0, 0,0}; // First 2 are V1,V2 last 2 are I1, I2
-float AVcc = 4.72; // Measured voltage of the ADC reference
+float AVcc = 4.02; // Measured voltage of the ADC reference
 bool psuState = 0;
-#define BUT 6   // Button
+#define BUT 2   // Button
 #define REL 12 // Relay
 
 void setup() {
@@ -29,7 +29,7 @@ void setup() {
 
 void loop() {
   measure();
-  if(digitalRead(BUT) == 0){ // Check if power button is pressed and change psuState
+  if(!digitalRead(BUT)){ // Check if power button is pressed and change psuState
     psuState = !psuState;
   }
   digitalWrite(REL, psuState);
@@ -40,12 +40,13 @@ void measure(){
   float I1Val = ((float)analogRead(A1)/1024)*AVcc;
   measurements[0] = V1Val/0.17812758906; // Measure value of V1
   // measurements[1] = (analogRead(A1)/1023)*AVcc* ((990 + 217)/217); // Measure value of V2
-  measurements[2] = (I1Val*(1000/2.60)); // Measure value of I1
+  // measurements[2] = (I1Val*(1000/2.60)); // Measure value of I1
+  measurements[2] = 0;
   // measurements[3] = (analogRead(A3)/1023)*AVcc; // Measure value of I2
 }
 void initLCD(){
   lcd.initR(INITR_GREENTAB); // Initializing with green tab because of offset. (colors aren't displayed right otherwise.)
-  lcd.setRotation(rotation); 
+  lcd.setRotation(rotation);
   lcd.fillScreen(ST7735_BLACK);
   lcd.setTextColor(ST7735_YELLOW, ST7735_BLACK); // I really like yellow on black
   lcd.setTextSize(2);
@@ -78,7 +79,7 @@ void drawLCD(float V1Val, float V2Val, float I1Val, float I2Val, bool psuState){
   lcd.print(I1Val);
   lcd.print(" ");
   // Setting fixed unit of measurement positions
-  lcd.setCursor(110,50); 
+  lcd.setCursor(110,50);
   lcd.print("mA");
   lcd.setCursor(110,0);
   lcd.print("V");
