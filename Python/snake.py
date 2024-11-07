@@ -18,6 +18,8 @@ def drawGrid():
         for y in range(0,SC_H, gridSize):
             rect = pygame.Rect(x,y,gridSize,gridSize)
             pygame.draw.rect(SC,'#0a0a0a',rect,1)
+    rect1 = pygame.Rect(0,0,SC_W,SC_H)
+    pygame.draw.rect(SC,'#00aaaa', rect1, 10)
 
 class Snake:
     def __init__(self):
@@ -75,16 +77,16 @@ while running:
             running = False
             pygame.quit()
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_DOWN:
+            if event.key == pygame.K_DOWN and event.key != pygame.K_UP:
                 snake.ydir = 1
                 snake.xdir = 0
-            elif event.key == pygame.K_UP:
+            elif event.key == pygame.K_UP and event.key != pygame.K_DOWN:
                 snake.ydir = -1
                 snake.xdir = 0
-            elif event.key == pygame.K_LEFT:
+            elif event.key == pygame.K_LEFT and event.key != pygame.K_RIGHT:
                 snake.ydir = 0
                 snake.xdir = -1
-            elif event.key == pygame.K_RIGHT:
+            elif event.key == pygame.K_RIGHT and event.key != pygame.K_LEFT:
                 snake.ydir = 0
                 snake.xdir = 1
 
@@ -110,6 +112,6 @@ while running:
         
 
     pygame.display.flip()
-    clock.tick(5)
+    clock.tick(8)
 
 pygame.quit

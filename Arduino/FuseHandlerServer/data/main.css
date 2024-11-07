@@ -1,0 +1,23 @@
+
+body{
+    background-color: #333;
+    color:gold;
+}
+.list {
+    display:grid;
+    grid-template-rows: 1fr;
+    grid-template-columns:1fr  1fr;
+}
+.list ul{
+    display:inline-block;
+    text-decoration: none;
+    list-style: none;
+}
+.listL{
+    text-align: center;
+    grid-area:1/1/span 1/span 1;
+}
+.listR{
+    text-align: center;
+    grid-area:1/2/span 1/span 1;
+}
