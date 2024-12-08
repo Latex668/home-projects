@@ -7,6 +7,8 @@ BOT_TOKEN = getenv("BOT_TOKEN")
 import requests
 import matplotlib.colors as mcolors
 
+
+# Wled lights JSON request functions:
 def lightsPWR(pwrVal,brightnessVal):
   r = requests.post("http://192.168.100.50/json/state", json={"on":pwrVal,"bri":int(brightnessVal/100*255)})
   print(f"Status Code: {r.status_code}, Response: {r.json()}")
@@ -22,11 +24,6 @@ def changeEffectSpeed(effectSpeed):
 def changeEffectIntensity(effectIntensity):
   r = requests.post("http://192.168.100.50/json/state", json={"seg":[{"v":"true","id":0,"pal":3,"ix":str(effectIntensity/100*255)}]})
   print(f"Status Code: {r.status_code}, Response: {r.json()}")
-
-intents = discord.Intents.default()
-intents.message_content = True
-
-bot = commands.Bot(command_prefix="/", intents=intents)
 
 #dictionary for light effects
 effectDict = {
@@ -150,33 +147,38 @@ effectDict = {
 "dynamicsmooth":117,
 }
 
-#commands
+
+intents = discord.Intents.default()
+intents.message_content = True
+bot = commands.Bot(command_prefix="/", intents=intents)
+
+# Bot commands
 @bot.command(name="lights", description="Turns the lights on/off and changes brightness")
 async def lights(ctx, pwrVal:bool = commands.parameter(default=True, description="accepts on/off"), brightness:float = commands.parameter(default=50, description="Sets the lights' brightness value, between 0-100")):
   if((brightness > 100) or (brightness < 0)):
     await ctx.send("Please input a value between 0-100")
   else:
     lightsPWR(bool(pwrVal), brightness)
-    whatToReturn = lambda arg: "on" if(bool(arg)==True) else "off"
+    whatToReturn = lambda arg: "on" if(bool(arg)==True) else "off" # literally just returns on/off if its true/false to look better lol
     await ctx.send(f"Lights are {whatToReturn(pwrVal)} at brightness: {brightness}%!")
 
 @bot.command(name="color", description="Changes the lights color")
 async def color(ctx, colorSTR:str):
-    colorRGB = []
+    colorRGB = [] # list to store the converted rgb color
     for color in mcolors.to_rgb(colorSTR):
-      colorRGB.append(color*255)
+      colorRGB.append(color*255) # multiply by 255 so we can get 8 bit rgb values
     await ctx.send(f"Color is set to {colorSTR}!")
     lightsColor(colorRGB)
 
-
 @bot.command(name="effect", description="Changes the lights effect to said ID, additionally set to r for random")
-async def effect(ctx, effectID: str):
-   if(effectID != "r"):
-    lightEffectsF(effectDict[effectID])
-    await ctx.send(f"Effect ID is set to: {effectID}")
+async def effect(ctx, effectSTR: str):
+   if(effectSTR != "r"):
+    lightEffectsF(effectDict[effectSTR])
+    await ctx.send(f"Effect is set to: {effectSTR}")
    else:
      lightEffectsF("r")
      await ctx.send("Effect ID is set to: random!")
+
 @bot.command(name="effectSpeed", description="Changes the brightness of the effect.")
 async def effectSpeed(ctx, effectSpeed:int):
   if(effectSpeed > 100  or effectSpeed < 0 ):
@@ -184,6 +186,7 @@ async def effectSpeed(ctx, effectSpeed:int):
   else:
     changeEffectSpeed(effectSpeed)
     await ctx.send(f"Effect speed is: {effectSpeed}%!")
+
 @bot.command(name="effectIntensity", description="Changes the intensity of the effect.")
 async def effectIntensity(ctx, effectIntensity:int):
   if(effectIntensity > 100  or effectIntensity < 0):
@@ -191,15 +194,17 @@ async def effectIntensity(ctx, effectIntensity:int):
   else:
     changeEffectIntensity(effectIntensity)
     await ctx.send(f"Effect intensity is: {effectIntensity}%!")
+
 @bot.command(name="helpEffects", description="Sends a dm with all effect names and a link to see what they look like")
 async def helpEffects(ctx):
   await ctx.message.author.send(f"Effect id's are: \n {list(effectDict.keys())} \n https://github.com/Aircoookie/WLED/wiki/List-of-effects-and-palettes")
 @bot.command(name="giveburger", description="Sends bismarck a burger :D")
 async def giveburger(ctx):
   await ctx.send("<@600023802809679894> https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Fa-giant-enormous-hamburger-dripping-with-cheese-on-a-v0-betcdk4ia54a1.png%3Fauto%3Dwebp%26s%3De945e87b35c82938ff6fe9f1ac0c0c6f25418d6e")
+
+
 @bot.event
 async def on_command_error(ctx, error):
   await ctx.send(f"An error has occured: {str(error)}!")
-
 
 bot.run(BOT_TOKEN)

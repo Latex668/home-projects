@@ -7,7 +7,7 @@ import asyncio
 from PyCharacterAI import get_client
 from PyCharacterAI.exceptions import SessionClosedError
 
-character_id = "VIqELxEyIJttOJVzR_sYEDCOBq9OHuYBTmaEX97lFLw" # Astolfo
+character_id = "VIqELxEyIJttOJVzR_sYEDCOBq9OHuYBTmaEX97lFLw" # Astolfo cid
 
 
 async def main():
