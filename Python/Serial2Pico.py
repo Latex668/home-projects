@@ -33,7 +33,7 @@ def mainProgram():
             dt = datetime.datetime.now()
             timeNow = dt.strftime("%H:%M") # Get the time now as h:m format
             dateNow = dt.strftime("%d/%m/%y")
-            write_read(f"Time: {timeNow}     , Date: {dateNow}   \n") # convert data returned from function from byte to str
+            write_read(f"Time: {timeNow}     , Date: {dateNow}   \n") # I'm sending the data in such a weird way cuz random characters would get displayed on my lcd whenever i received them, so my solution was to add spaces lol.
             time.sleep(1)
         except:
             restartProgram()
