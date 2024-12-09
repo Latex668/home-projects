@@ -29,15 +29,24 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  if(!Serial){
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("COM closed!");
+    lcd.setCursor(0, 1);
+    lcd.print("Restarting!");
+    delay(1000);
+    setup();
+  }
   if(Serial.available()>0){ // If serial is available, save time and date till the separators and then display them (it was such a pain to come to this solution)
     String Time = Serial.readStringUntil(',');
     Serial.read();
     String Date = Serial.readStringUntil('\n');
     Serial.read();
     lcd.setCursor(0,0);
-    lcd.println(Time);
+    lcd.print(Time);
     lcd.setCursor(0,1);
-    lcd.println(Date);
+    lcd.print(Date);
   }
 }
   
