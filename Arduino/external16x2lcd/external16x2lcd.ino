@@ -14,14 +14,27 @@ void setup() {
   lcd.setCursor(0, 0);
   while(!Serial){ // While serial isnt open, write a starting message and add a . to the end every sec
     String startMessage = "Starting";
-    for(int i=1;i<5;i++){
-      lcd.clear();
-      lcd.print(startMessage);
-      startMessage = startMessage+".";
-      delay(1000);
-    }
-    startMessage = "Starting";
+    for(int j=0;j<3;j++){
+      for(int i=1;i<5;i++){
+        lcd.clear();
+        lcd.print(startMessage);
+        startMessage = startMessage+".";
+        delay(1000);
+      }
+      startMessage = "Starting";
+  if(j==2){ // Added another for loop so that if it goes on for 3x without connecting to the COM port the backlight and display turns off.
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("No COM!");
+    lcd.setCursor(0, 1);
+    lcd.print("Turning off!");
+    delay(3000);
+    lcd.noBacklight();
+    lcd.noDisplay();
+  }}
   }
+  lcd.display();
+  lcd.backlight();
   lcd.clear();
   lcd.print("COM Started!");
   delay(500);

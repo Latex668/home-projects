@@ -1,4 +1,5 @@
 # Code to send serial data to pi pico with external 16x2 lcd
+# forgot to mention but this is paired with the external16x2lcd.ino file
 from os import _exit
 from infi.systray import SysTrayIcon
 def onQuit(systray):
