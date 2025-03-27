@@ -7,7 +7,7 @@ LiquidCrystal_I2C lcd(0x26,16,2);
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.setTimeout(1);
   lcd.init();
   lcd.backlight();
@@ -31,6 +31,7 @@ void setup() {
     delay(3000);
     lcd.noBacklight();
     lcd.noDisplay();
+    lcd.clear();
   }}
   }
   lcd.display();
@@ -52,14 +53,14 @@ void loop() {
     setup();
   }
   if(Serial.available()>0){ // If serial is available, save time and date till the separators and then display them (it was such a pain to come to this solution)
+    lcd.clear();
     String Time = Serial.readStringUntil(',');
-    Serial.read();
-    String Date = Serial.readStringUntil('\n');
-    Serial.read();
+    String Date = Serial.readStringUntil('.');
     lcd.setCursor(0,0);
     lcd.print(Time);
     lcd.setCursor(0,1);
     lcd.print(Date);
+    delay(100);
   }
 }
   

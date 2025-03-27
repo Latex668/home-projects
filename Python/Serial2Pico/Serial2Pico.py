@@ -28,11 +28,11 @@ def restartProgram(): # if error, retry program lol
         mainProgram()
 
 def mainProgram():
-    pico = serial.Serial(port="COM12", baudrate=115200,timeout=.1) # set serial to port 12 baud 115200
+    pico = serial.Serial(port="COM12", baudrate=9600,timeout=.1) # set serial to port 12
 
     def write_read(txt): # function to send and receive input from serial.
         pico.write(bytes(txt, 'UTF-8'))
-        time.sleep(0.05)
+        time.sleep(1)
         data = pico.readline()
         return data
 
@@ -41,8 +41,7 @@ def mainProgram():
             dt = datetime.datetime.now()
             timeNow = dt.strftime("%H:%M") # Get the time now as h:m format
             dateNow = dt.strftime("%d/%m/%y")
-            write_read(f"Time: {timeNow}     , Date: {dateNow}   \n") # I'm sending the data in such a weird way cuz random characters would get displayed on my lcd whenever i received them, so my solution was to add spaces lol.
-            time.sleep(1)
+            write_read(f"Time: {timeNow},Date: {dateNow}.") # I'm sending the data in such a weird way cuz random characters would get displayed on my lcd whenever i received them, so my solution was to add spaces lol.
         except:
             restartProgram()
 
