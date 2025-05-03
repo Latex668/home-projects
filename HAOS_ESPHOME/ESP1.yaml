@@ -1,0 +1,152 @@
+esphome:
+  name: esp1
+  friendly_name: ESP1
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "V4lhL8qz1tMRJHu9qPtnFYqPcPZ0ppZMGWId0/u4Pc8="
+
+ota:
+  - platform: esphome
+    password: "255b8670cec79de79a303812499dea0b"
+
+wifi:
+  networks:
+  - ssid: "Alex-home"
+    password: !secret wifi_password
+  - ssid:  "UPC7604768"
+    password: !secret wifi2_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp1 Fallback Hotspot"
+
+captive_portal:
+    
+# I2C config
+i2c:
+  sda: GPIO21
+  scl: GPIO22
+  scan: True
+  id: bus_a
+  frequency: 800kHz
+
+# Relay board init
+xl9535:
+  - id: xl9535_hub
+    address: 0x21
+
+# Relay outputs
+switch:
+  - platform: gpio
+    name: Relay0
+    id: relay0
+    pin:
+      xl9535: xl9535_hub
+      number: 0
+      mode:
+        output: true
+  - platform: gpio
+    name: Relay1
+    id: relay1
+    pin:
+      xl9535: xl9535_hub
+      number: 1
+      mode:
+        output: true
+  - platform: gpio
+    name: Relay2
+    id: relay2
+    pin:
+      xl9535: xl9535_hub
+      number: 2
+      mode:
+        output: true
+  - platform: gpio
+    name: Relay3
+    id: relay3
+    pin:
+      xl9535: xl9535_hub
+      number: 3
+      mode:
+        output: true
+  - platform: gpio
+    name: Relay4
+    id: relay4
+    pin:
+      xl9535: xl9535_hub
+      number: 4
+      mode:
+        output: true
+  - platform: gpio
+    name: Relay5
+    id: relay5
+    pin:
+      xl9535: xl9535_hub
+      number: 5
+      mode:
+        output: true
+  - platform: gpio
+    name: Relay6
+    id: relay6
+    pin:
+      xl9535: xl9535_hub
+      number: 6
+      mode:
+        output: true
+  - platform: gpio
+    name: Relay7
+    id: relay7
+    pin:
+      xl9535: xl9535_hub
+      number: 7
+      mode:
+        output: true
+
+  # PWM lights
+
+output:
+  - platform: ledc
+    pin: 19
+    id: light0OUT
+  - platform: ledc
+    pin: 18
+    id: light1OUT
+  - platform: ledc
+    pin: 5
+    id: light2OUT
+  - platform: ledc
+    pin: 4
+    id: light3OUT
+light:
+  - platform: monochromatic
+    name: "Light0"
+    output: light0OUT
+  - platform: monochromatic
+    name: "Light1"
+    output: light1OUT
+  - platform: monochromatic
+    name: "Light2"
+    output: light2OUT
+  - platform: monochromatic
+    name: "Light3"
+    output: light3OUT
+
+# 16x2 LCD
+display:
+  - platform: lcd_pcf8574
+    dimensions: 16x4
+    address: 0x25
+    lambda: |-
+      // Print relay values:
+      it.printf(0,0,"Relay0: %s", id(relay0).state ? "ON" : "OFF"); // print r0.val at c0,r0
+      it.printf(0,1,"Relay1: %s", id(relay1).state ? "ON" : "OFF");

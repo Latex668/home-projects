@@ -1,2 +1,12 @@
-{
+"settings": {
+    "emeraldwalk.runonsave": {
+        "commands": [
+            {
+                "match": "\\.yml$",
+                "cmd": "wireviz ${file}"
+            },
+            
+        ]
+    }
+}{
 }
