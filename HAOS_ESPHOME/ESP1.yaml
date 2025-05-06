@@ -105,12 +105,18 @@ switch:
         output: true
   - platform: gpio
     name: Relay7
+    icon: "mdi:gate"
     id: relay7
     pin:
       xl9535: xl9535_hub
       number: 7
       mode:
         output: true
+    on_turn_on:
+      - delay: 500ms
+      - switch.turn_off: relay7
+
+    
 
   # PWM lights
 
@@ -140,7 +146,15 @@ light:
   - platform: monochromatic
     name: "Light3"
     output: light3OUT
+  
 
+  - platform: esp32_rmt_led_strip
+    rgb_order: BRG
+    pin: 23
+    num_leds: 30
+    rmt_channel: 0
+    chipset: ws2812
+    name: "test strip"
 # 16x2 LCD
 display:
   - platform: lcd_pcf8574
@@ -150,3 +164,78 @@ display:
       // Print relay values:
       it.printf(0,0,"Relay0: %s", id(relay0).state ? "ON" : "OFF"); // print r0.val at c0,r0
       it.printf(0,1,"Relay1: %s", id(relay1).state ? "ON" : "OFF");
+
+# Fuse detector "Switches"
+binary_sensor:
+  - platform: gpio
+    device_class: power    
+    name: Fuse0
+    id: fuse0
+    pin: 
+      number: 32
+      mode:
+        input: True
+        pulldown: True
+  - platform: gpio
+    device_class: power
+    name: Fuse1
+    id: fuse1
+    pin: 
+      number: 33
+      mode:
+        input: True
+        pulldown: True
+  - platform: gpio
+    device_class: power
+    name: Fuse2
+    id: fuse2
+    pin: 
+      number: 27
+      mode:
+        input: True
+        pulldown: True
+  - platform: gpio
+    device_class: power
+    name: Fuse3
+    id: fuse3
+    pin: 
+      number: 14
+      mode:
+        input: True
+        pulldown: True
+  - platform: gpio
+    device_class: power
+    name: Fuse4
+    id: fuse4
+    pin: 
+      number: 12
+      mode:
+        input: True
+        pulldown: True
+  - platform: gpio
+    device_class: power
+    name: Fuse5
+    id: fuse5
+    pin: 
+      number: 13
+      mode:
+        input: True
+        pulldown: True
+  - platform: gpio
+    device_class: power
+    name: Fuse6
+    id: fuse6
+    pin: 
+      number: 2
+      mode:
+        input: True
+        pulldown: True
+  - platform: gpio
+    device_class: power
+    name: Fuse7
+    id: fuse7
+    pin: 
+      number: 15
+      mode:
+        input: True
+        pulldown: True
