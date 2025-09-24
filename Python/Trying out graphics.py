@@ -5,8 +5,10 @@ screen = pygame.display.set_mode((800, 800))
 clock = pygame.time.Clock()
 running = True
  
-def drawPixel(color, x, y): # pixel size is 10x bigger
-    screen.fill(color, ((x, y), (10,10)))
+def drawPixel(color, x, y): # pixel size is 10x bigger, rgba optional
+    colorRGB = (pygame.Color(color).premul_alpha())
+    # calculate opacity
+    screen.fill(colorRGB, ((x, y), (10,10)))
 
 def drawLine(color, x1, y1, x2, y2): # bresenham's line generation algorithm
     if abs(x2-x1) > abs(y2-y1): # draw horizontal line
@@ -43,6 +45,7 @@ def drawLine(color, x1, y1, x2, y2): # bresenham's line generation algorithm
                     x += dir
                     p = p - 2*dy
                 p = p + 2*dx
+
 
 def drawRect(color, x, y, width, height):
     drawLine(color, x, y, x+width, y) # top line
@@ -101,13 +104,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
-
     if running:
         screen.fill("purple")
-        drawTriangle("white", 100, 300, 300, 300, 200, 100) 
-        drawPixel("green", 100, 300)
-        drawPixel("green", 300, 300)
-        drawPixel("green", 200, 100)
-        
+        drawLine("green",400,400,600,400)
         pygame.display.flip()
         clock.tick(60)
