@@ -1,10 +1,13 @@
 import pygame
 import math
 pygame.init()
-screen = pygame.display.set_mode((800, 800))
+screen = pygame.display.set_mode((640, 640))
 clock = pygame.time.Clock()
 running = True
- 
+
+# TO-DO:
+# switch from coords to vectors
+
 def drawPixel(color, x, y): # pixel size is 10x bigger, rgba optional
     colorRGB = (pygame.Color(color).premul_alpha())
     # calculate opacity
@@ -98,14 +101,23 @@ def drawFilledCircle(color, cx, cy, radius): # midpoint circle algorithm as well
         drawLine(color, cx+y, cy+x, cx-y, cy+x)
         drawLine(color, cx+y, cy-x, cx-y, cy-x)
         x += 1
-      
+
+def drawGrid(color, boxSize, screenSizeX, screenSizeY): # draw a colored grid with dimensions boxSize x BoxSize
+    for y in range(0, screenSizeY, boxSize): # draw the horizontal lines
+        drawLine(color, 0, y, screenSizeX, y)
+    for x in range(0, screenSizeX, boxSize): # draw the vertical lines
+        drawLine(color, x, 0, x, screenSizeY)
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
     if running:
-        screen.fill("purple")
-        drawLine("green",400,400,600,400)
+        screen.fill("white") # background
+        drawPixel("green", 10, 10)
+        drawLine("green", 20, 20, 50, 50)
+        drawGrid("black", 20, 640, 640)
+
         pygame.display.flip()
         clock.tick(60)
