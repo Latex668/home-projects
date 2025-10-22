@@ -10,7 +10,7 @@
 
 #include <Adafruit_GFX.h>         // Core graphics library
 #include <Adafruit_ST7735.h>      // Hardware-specific library
-#include <SdFat.h>                // SD card & FAT filesystem library
+#include <SdFat_Adafruit_Fork.h>  // SD card & FAT filesystem library
 #include <Adafruit_SPIFlash.h>    // SPI / QSPI flash library
 #include <Adafruit_ImageReader.h> // Image-reading functions
 #include <Adafruit_miniTFTWing.h> // Part of Seesaw library
@@ -76,7 +76,9 @@ void setup(void) {
   Serial.print(F("Initializing filesystem..."));
 #if defined(USE_SD_CARD)
   // SD card is pretty straightforward, a single call...
-  if(!SD.begin(SD_CS, SD_SCK_MHZ(25))) { // ESP32 requires 25 MHz limit
+  // M0 max SPI is 12 MHz
+  // ESP32 can handl 25 MHz
+  if(!SD.begin(SD_CS, SD_SCK_MHZ(12))) {
     Serial.println(F("SD begin() failed"));
     for(;;); // Fatal error, do not continue
   }

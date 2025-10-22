@@ -9,7 +9,7 @@
   These sensors use I2C to communicate. The device's I2C address is 0x39
 
   Adafruit invests time and resources providing this open source code,
-  please support Adafruit andopen-source hardware by purchasing products
+  please support Adafruit and open-source hardware by purchasing products
   from Adafruit!
 
   Written by Dean Miller for Adafruit Industries.
@@ -27,7 +27,7 @@ void setup() {
   }
   else Serial.println("Device initialized!");
 
-  //enable color sensign mode
+  //enable color sensing mode
   apds.enableColor(true);
 }
 

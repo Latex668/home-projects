@@ -6,7 +6,7 @@
 
 #include <Adafruit_GFX.h>         // Core graphics library
 #include <Adafruit_ILI9341.h>     // Hardware-specific library
-#include <SdFat.h>                // SD card & FAT filesystem library
+#include <SdFat_Adafruit_Fork.h>  // SD card & FAT filesystem library
 #include <Adafruit_SPIFlash.h>    // SPI / QSPI flash library
 #include <Adafruit_ImageReader.h> // Image-reading functions
 
@@ -40,6 +40,10 @@
   #define TFT_CS   P5_3
   #define STMPE_CS P3_3
   #define SD_CS    P3_2
+#elif defined(ARDUINO_ADAFRUIT_FEATHER_RP2040)
+  #define TFT_CS   9
+  #define TFT_DC   10
+  #define SD_CS    7 // "pin 5" on original rp2040 feather ONLY
 #else // Anything else!
   #define TFT_CS   9
   #define TFT_DC   10
@@ -86,7 +90,9 @@ void setup(void) {
   Serial.print(F("Initializing filesystem..."));
 #if defined(USE_SD_CARD)
   // SD card is pretty straightforward, a single call...
-  if(!SD.begin(SD_CS, SD_SCK_MHZ(25))) { // ESP32 requires 25 MHz limit
+  // M0 max SPI is 12 MHz
+  // ESP32 can handl 25 MHz
+  if(!SD.begin(SD_CS, SD_SCK_MHZ(12))) {
     Serial.println(F("SD begin() failed"));
     for(;;); // Fatal error, do not continue
   }

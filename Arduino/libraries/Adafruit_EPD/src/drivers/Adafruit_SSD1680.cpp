@@ -1,4 +1,5 @@
 #include "Adafruit_SSD1680.h"
+
 #include "Adafruit_EPD.h"
 
 #define EPD_RAM_BW 0x10
@@ -48,7 +49,7 @@ Adafruit_SSD1680::Adafruit_SSD1680(int width, int height, int16_t SID,
     height += 8 - (height % 8);
   }
 
-  buffer1_size = width * height / 8;
+  buffer1_size = ((uint32_t)width * (uint32_t)height) / 8;
   buffer2_size = buffer1_size;
 
   if (SRCS >= 0) {
@@ -57,8 +58,8 @@ Adafruit_SSD1680::Adafruit_SSD1680(int width, int height, int16_t SID,
     buffer2_addr = buffer1_size;
     buffer1 = buffer2 = NULL;
   } else {
-    buffer1 = (uint8_t *)malloc(buffer1_size);
-    buffer2 = (uint8_t *)malloc(buffer2_size);
+    buffer1 = (uint8_t*)malloc(buffer1_size);
+    buffer2 = (uint8_t*)malloc(buffer2_size);
   }
 
   singleByteTxns = true;
@@ -80,13 +81,13 @@ Adafruit_SSD1680::Adafruit_SSD1680(int width, int height, int16_t SID,
 /**************************************************************************/
 Adafruit_SSD1680::Adafruit_SSD1680(int width, int height, int16_t DC,
                                    int16_t RST, int16_t CS, int16_t SRCS,
-                                   int16_t BUSY, SPIClass *spi)
+                                   int16_t BUSY, SPIClass* spi)
     : Adafruit_EPD(width, height, DC, RST, CS, SRCS, BUSY, spi) {
   if ((height % 8) != 0) {
     height += 8 - (height % 8);
   }
 
-  buffer1_size = width * height / 8;
+  buffer1_size = ((uint32_t)width * (uint32_t)height) / 8;
   buffer2_size = buffer1_size;
 
   if (SRCS >= 0) {
@@ -95,8 +96,8 @@ Adafruit_SSD1680::Adafruit_SSD1680(int width, int height, int16_t DC,
     buffer2_addr = buffer1_size;
     buffer1 = buffer2 = NULL;
   } else {
-    buffer1 = (uint8_t *)malloc(buffer1_size);
-    buffer2 = (uint8_t *)malloc(buffer2_size);
+    buffer1 = (uint8_t*)malloc(buffer1_size);
+    buffer2 = (uint8_t*)malloc(buffer2_size);
   }
 
   singleByteTxns = true;
@@ -138,10 +139,8 @@ void Adafruit_SSD1680::begin(bool reset) {
 void Adafruit_SSD1680::update() {
   uint8_t buf[1];
 
-  // display update sequence
-  buf[0] = 0xF4;
+  buf[0] = _display_update_val; // varies for mono vs gray4 mode
   EPD_command(SSD1680_DISP_CTRL2, buf, 1);
-
   EPD_command(SSD1680_MASTER_ACTIVATE);
   busy_wait();
 
@@ -162,7 +161,7 @@ void Adafruit_SSD1680::powerUp() {
   delay(100);
   busy_wait();
 
-  const uint8_t *init_code = ssd1680_default_init_code;
+  const uint8_t* init_code = ssd1680_default_init_code;
 
   if (_epd_init_code != NULL) {
     init_code = _epd_init_code;
@@ -186,12 +185,10 @@ void Adafruit_SSD1680::powerUp() {
   buf[3] = (WIDTH - 1) >> 8;
   EPD_command(SSD1680_SET_RAMYPOS, buf, 4);
 
-  // Set LUT
-  /*
-  buf[0] = LUT_DATA[74];
-  EPD_command(SSD1680_WRITE_LUT, buf, 1);
-  EPD_command(SSD1680_WRITE_LUT, LUT_DATA, 70);
-  */
+  // Set LUT (if we have one)
+  if (_epd_lut_code) {
+    EPD_commandList(_epd_lut_code);
+  }
 
   // Set display size and driver output control
   buf[0] = (WIDTH - 1);

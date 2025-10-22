@@ -27,15 +27,33 @@
 #endif
 
 // ThinkInk_154_Grayscale4_T8 display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS,
-// EPD_BUSY, EPD_SPI); ThinkInk_213_Grayscale4_T5 display(EPD_DC, EPD_RESET,
-// EPD_CS, SRAM_CS, EPD_BUSY, EPD_SPI);
+// EPD_BUSY, EPD_SPI); 
 
-// 2.9" Grayscale Featherwing or Breakout:
-ThinkInk_290_Grayscale4_T5 display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY,
-                                   EPD_SPI);
-// 4.2" Grayscale display
-// ThinkInk_420_Grayscale4_T2 display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS,
-// EPD_BUSY, EPD_SPI);
+
+// 1.54" Grayscale Breakout (SSD1681)
+//ThinkInk_154_Grayscale4_M05 display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY, EPD_SPI);
+
+
+// 2.13" 212x104 Grayscale display with IL0373 chipset
+// ThinkInk_213_Grayscale4_T5 display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY, EPD_SPI);
+
+// 2.13" Grayscale Featherwing or Breakout (SSD1680Z)
+ThinkInk_213_Grayscale4_MFGN display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY,
+                                     EPD_SPI);
+
+// 2.66" Monochrome display with 296x152 pixels and SSD1680 chipset
+// ThinkInk_266_Grayscale4_MFGN display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY,
+//                                      EPD_SPI);
+
+// 2.9" Grayscale Featherwing or Breakout with IL0373
+// ThinkInk_290_Grayscale4_T5 display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY,
+//                                    EPD_SPI);
+
+// 2.9" 4-Grayscale display with 296x128 pixels and SSD1680 chipset
+// ThinkInk_290_Grayscale4_EAAMFGN display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY, EPD_SPI);
+
+// 4.2" 4-Grayscale display with SSD1683 chipset
+// ThinkInk_420_Grayscale4_MFGN display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY, EPD_SPI);
 
 #define COLOR1 EPD_BLACK
 #define COLOR2 EPD_LIGHT
@@ -64,9 +82,16 @@ void loop() {
   display.clearBuffer();
   display.setTextSize(3);
   display.setTextColor(EPD_BLACK);
-  display.setCursor(20, 40);
+  display.setCursor((display.width() - 180) / 2, (display.height() - 24) / 2);
   if (gray) {
-    display.print("Grayscale");
+    String text = "Grayscale";
+    uint16_t colors[] = {EPD_BLACK, EPD_DARK, EPD_LIGHT};
+  
+    for (int i = 0; i < text.length(); i++) {
+      // Change color for every character (0: BLACK, 1: DARK, 2: LIGHT, 3: BLACK, etc.)
+      display.setTextColor(colors[i % 3]);
+      display.print(text.charAt(i));
+    }
   } else {
     display.print("Monochrome");
   }
@@ -74,7 +99,7 @@ void loop() {
   gray = !gray;
 
   display.display();
-  delay(1000);
+  delay(2000);
 
   display.clearBuffer();
   display.fillRect(display.width() / 4, 0, display.width() / 4,

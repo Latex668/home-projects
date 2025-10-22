@@ -1,4 +1,5 @@
 #include "Adafruit_SSD1681.h"
+
 #include "Adafruit_EPD.h"
 
 #define EPD_RAM_BW 0x10
@@ -53,8 +54,8 @@ Adafruit_SSD1681::Adafruit_SSD1681(int width, int height, int16_t SID,
     buffer2_addr = buffer1_size;
     buffer1 = buffer2 = NULL;
   } else {
-    buffer1 = (uint8_t *)malloc(buffer1_size);
-    buffer2 = (uint8_t *)malloc(buffer2_size);
+    buffer1 = (uint8_t*)malloc(buffer1_size);
+    buffer2 = (uint8_t*)malloc(buffer2_size);
   }
 
   singleByteTxns = true;
@@ -76,7 +77,7 @@ Adafruit_SSD1681::Adafruit_SSD1681(int width, int height, int16_t SID,
 /**************************************************************************/
 Adafruit_SSD1681::Adafruit_SSD1681(int width, int height, int16_t DC,
                                    int16_t RST, int16_t CS, int16_t SRCS,
-                                   int16_t BUSY, SPIClass *spi)
+                                   int16_t BUSY, SPIClass* spi)
     : Adafruit_EPD(width, height, DC, RST, CS, SRCS, BUSY, spi) {
   if ((height % 8) != 0) {
     height += 8 - (height % 8);
@@ -91,8 +92,8 @@ Adafruit_SSD1681::Adafruit_SSD1681(int width, int height, int16_t DC,
     buffer2_addr = buffer1_size;
     buffer1 = buffer2 = NULL;
   } else {
-    buffer1 = (uint8_t *)malloc(buffer1_size);
-    buffer2 = (uint8_t *)malloc(buffer2_size);
+    buffer1 = (uint8_t*)malloc(buffer1_size);
+    buffer2 = (uint8_t*)malloc(buffer2_size);
   }
 
   singleByteTxns = true;
@@ -135,7 +136,7 @@ void Adafruit_SSD1681::update() {
   uint8_t buf[1];
 
   // display update sequence
-  buf[0] = 0xF7;
+  buf[0] = _display_update_val; // varies for mono vs gray4 mode
   EPD_command(SSD1681_DISP_CTRL2, buf, 1);
 
   EPD_command(SSD1681_MASTER_ACTIVATE);
@@ -170,25 +171,25 @@ void Adafruit_SSD1681::displayPartial(uint16_t x1, uint16_t y1, uint16_t x2,
                                       uint16_t y2) {
   // check rotation, move window around if necessary
   switch (getRotation()) {
-  case 0:
-    EPD_swap(x1, y1);
-    EPD_swap(x2, y2);
-    y1 = WIDTH - y1;
-    y2 = WIDTH - y2;
-    break;
-  case 1:
-    break;
-  case 2:
-    EPD_swap(x1, y1);
-    EPD_swap(x2, y2);
-    x1 = HEIGHT - x1;
-    x2 = HEIGHT - x2;
-    break;
-  case 3:
-    y1 = WIDTH - y1;
-    y2 = WIDTH - y2;
-    x1 = HEIGHT - x1;
-    x2 = HEIGHT - x2;
+    case 0:
+      EPD_swap(x1, y1);
+      EPD_swap(x2, y2);
+      y1 = WIDTH - y1;
+      y2 = WIDTH - y2;
+      break;
+    case 1:
+      break;
+    case 2:
+      EPD_swap(x1, y1);
+      EPD_swap(x2, y2);
+      x1 = HEIGHT - x1;
+      x2 = HEIGHT - x2;
+      break;
+    case 3:
+      y1 = WIDTH - y1;
+      y2 = WIDTH - y2;
+      x1 = HEIGHT - x1;
+      x2 = HEIGHT - x2;
   }
   if (x1 > x2)
     EPD_swap(x1, x2);
@@ -259,20 +260,25 @@ void Adafruit_SSD1681::powerUp() {
   delay(100);
   busy_wait();
 
-  const uint8_t *init_code = ssd1681_default_init_code;
+  const uint8_t* init_code = ssd1681_default_init_code;
 
   if (_epd_init_code != NULL) {
     init_code = _epd_init_code;
   }
   EPD_commandList(init_code);
 
+  setRAMWindow(0, 0, (HEIGHT / 8) - 1, WIDTH - 1);
+
+  // Set LUT (if we have one)
+  if (_epd_lut_code) {
+    EPD_commandList(_epd_lut_code);
+  }
+
   // Set display size and driver output control
   buf[0] = (WIDTH - 1);
   buf[1] = (WIDTH - 1) >> 8;
   buf[2] = 0x00;
   EPD_command(SSD1681_DRIVER_CONTROL, buf, 3);
-
-  setRAMWindow(0, 0, (HEIGHT / 8) - 1, WIDTH - 1);
 }
 
 /**************************************************************************/

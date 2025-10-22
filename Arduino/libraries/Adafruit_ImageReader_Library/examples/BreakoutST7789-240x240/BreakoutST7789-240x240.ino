@@ -2,14 +2,14 @@
 // Demonstrates loading images to the screen, to RAM, and how to query
 // image file dimensions.
 // Requires three BMP files in root directory of SD card:
-// parrot.bmp, miniwoof.bmp and wales.bmp.
+// adabot.bmp, miniwoof.bmp and wales.bmp.
 // As written, this uses the microcontroller's SPI interface for the screen
 // (not 'bitbang') and must be wired to specific pins (e.g. for Arduino Uno,
 // MOSI = pin 11, MISO = 12, SCK = 13). Other pins are configurable below.
 
 #include <Adafruit_GFX.h>         // Core graphics library
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
-#include <SdFat.h>                // SD card & FAT filesystem library
+#include <SdFat_Adafruit_Fork.h>  // SD card & FAT filesystem library
 #include <Adafruit_SPIFlash.h>    // SPI / QSPI flash library
 #include <Adafruit_ImageReader.h> // Image-reading functions
 

@@ -20,13 +20,14 @@
 #ifndef _ADAFRUIT_EPD_H_
 #define _ADAFRUIT_EPD_H_
 
-//#define EPD_DEBUG
+// #define EPD_DEBUG
 
 #define RAMBUFSIZE 64 ///< size of the ram buffer
 
-#include "Adafruit_MCPSRAM.h"
 #include <Adafruit_GFX.h>
 #include <Adafruit_SPIDevice.h>
+
+#include "Adafruit_MCPSRAM.h"
 
 /**************************************************************************/
 /*!
@@ -34,27 +35,34 @@
 */
 /**************************************************************************/
 enum {
-  EPD_WHITE, ///< white color
-  EPD_BLACK, ///< black color
-  EPD_RED,   ///< red color
-  EPD_GRAY,  ///< gray color ('red' on grayscale)
-  EPD_DARK,  ///< darker color
-  EPD_LIGHT, ///< lighter color
+  EPD_WHITE,  ///< white color
+  EPD_BLACK,  ///< black color
+  EPD_RED,    ///< red color
+  EPD_GRAY,   ///< gray color ('red' on grayscale)
+  EPD_DARK,   ///< darker color
+  EPD_LIGHT,  ///< lighter color
+  EPD_YELLOW, ///< fourth color on some displays
   EPD_NUM_COLORS
 };
+
+typedef enum {
+  THINKINK_STANDARD = 0, // 99% of panels use this setup!
+  THINKINK_UC8179 = 1,   // .... except for UC8179?
+} thinkink_sramentrymode_t;
 
 typedef enum {
   THINKINK_MONO,
   THINKINK_TRICOLOR,
   THINKINK_GRAYSCALE4,
   THINKINK_MONO_PARTIAL,
+  THINKINK_QUADCOLOR,
 } thinkinkmode_t;
 
-#define EPD_swap(a, b)                                                         \
-  {                                                                            \
-    int16_t t = a;                                                             \
-    a = b;                                                                     \
-    b = t;                                                                     \
+#define EPD_swap(a, b) \
+  {                    \
+    int16_t t = a;     \
+    a = b;             \
+    b = t;             \
   } ///< simple swap function
 
 /**************************************************************************/
@@ -63,12 +71,12 @@ typedef enum {
 */
 /**************************************************************************/
 class Adafruit_EPD : public Adafruit_GFX {
-public:
+ public:
   Adafruit_EPD(int width, int height, int16_t SID, int16_t SCLK, int16_t DC,
                int16_t RST, int16_t CS, int16_t SRCS, int16_t MISO,
                int16_t BUSY = -1);
   Adafruit_EPD(int width, int height, int16_t DC, int16_t RST, int16_t CS,
-               int16_t SRCS, int16_t BUSY = -1, SPIClass *spi = &SPI);
+               int16_t SRCS, int16_t BUSY = -1, SPIClass* spi = &SPI);
   ~Adafruit_EPD();
 
   void begin(bool reset = true);
@@ -79,10 +87,14 @@ public:
   void setColorBuffer(int8_t index, bool inverted);
   void display(bool sleep = false);
 
-  thinkinkmode_t getMode(void) { return inkmode; }
+  thinkinkmode_t getMode(void) {
+    return inkmode;
+  }
 
-protected:
-  void writeRAMFramebufferToEPD(uint8_t *buffer, uint32_t buffer_size,
+ protected:
+  thinkink_sramentrymode_t _data_entry_mode = THINKINK_STANDARD;
+
+  void writeRAMFramebufferToEPD(uint8_t* buffer, uint32_t buffer_size,
                                 uint8_t EPDlocation, bool invertdata = false);
   void writeSRAMFramebufferToEPD(uint16_t SRAM_buffer_addr,
                                  uint32_t buffer_size, uint8_t EPDlocation,
@@ -136,15 +148,15 @@ protected:
       _reset_pin,                     ///< reset pin
       _cs_pin,                        ///< chip select pin
       _busy_pin;                      ///< busy pin
-  Adafruit_SPIDevice *spi_dev = NULL; ///< SPI object
+  Adafruit_SPIDevice* spi_dev = NULL; ///< SPI object
   static bool _isInTransaction;       ///< true if SPI bus is in trasnfer state
   bool singleByteTxns; ///< if true CS will go high after every data byte
                        ///< transferred
 
-  const uint8_t *_epd_init_code = NULL;
-  const uint8_t *_epd_lut_code = NULL;
-  const uint8_t *_epd_partial_init_code = NULL;
-  const uint8_t *_epd_partial_lut_code = NULL;
+  const uint8_t* _epd_init_code = NULL;
+  const uint8_t* _epd_lut_code = NULL;
+  const uint8_t* _epd_partial_init_code = NULL;
+  const uint8_t* _epd_partial_lut_code = NULL;
 
   uint16_t default_refresh_delay = 15000;
 
@@ -157,22 +169,22 @@ protected:
 
   uint32_t buffer1_size; ///< size of the primary buffer
   uint32_t buffer2_size; ///< size of the secondary buffer
-  uint8_t *buffer1; ///< the pointer to the primary buffer if using on-chip ram
-  uint8_t
-      *buffer2; ///< the pointer to the secondary buffer if using on-chip ram
-  uint8_t
-      *color_buffer; ///< the pointer to the color buffer if using on-chip ram
-  uint8_t
-      *black_buffer; ///< the pointer to the black buffer if using on-chip ram
+  uint8_t* buffer1; ///< the pointer to the primary buffer if using on-chip ram
+  uint8_t*
+      buffer2; ///< the pointer to the secondary buffer if using on-chip ram
+  uint8_t*
+      color_buffer; ///< the pointer to the color buffer if using on-chip ram
+  uint8_t*
+      black_buffer; ///< the pointer to the black buffer if using on-chip ram
   uint16_t buffer1_addr; ///< The SRAM address offsets for the primary buffer
   uint16_t buffer2_addr; ///< The SRAM address offsets for the secondary buffer
   uint16_t colorbuffer_addr; ///< The SRAM address offsets for the color buffer
   uint16_t blackbuffer_addr; ///< The SRAM address offsets for the black buffer
 
-  void EPD_commandList(const uint8_t *init_code);
-  void EPD_command(uint8_t c, const uint8_t *buf, uint16_t len);
+  void EPD_commandList(const uint8_t* init_code);
+  void EPD_command(uint8_t c, const uint8_t* buf, uint16_t len);
   uint8_t EPD_command(uint8_t c, bool end = true);
-  void EPD_data(const uint8_t *buf, uint16_t len);
+  void EPD_data(const uint8_t* buf, uint16_t len);
   void EPD_data(uint8_t data);
 
   uint8_t SPItransfer(uint8_t c);
@@ -199,13 +211,18 @@ protected:
 #include "drivers/Adafruit_IL0373.h"
 #include "drivers/Adafruit_IL0398.h"
 #include "drivers/Adafruit_IL91874.h"
+#include "drivers/Adafruit_JD79661.h"
+#include "drivers/Adafruit_JD79667.h"
 #include "drivers/Adafruit_SSD1608.h"
 #include "drivers/Adafruit_SSD1619.h"
 #include "drivers/Adafruit_SSD1675.h"
 #include "drivers/Adafruit_SSD1675B.h"
 #include "drivers/Adafruit_SSD1680.h"
 #include "drivers/Adafruit_SSD1681.h"
+#include "drivers/Adafruit_SSD1683.h"
 #include "drivers/Adafruit_UC8151D.h"
+#include "drivers/Adafruit_UC8179.h"
+#include "drivers/Adafruit_UC8253.h"
 #include "drivers/Adafruit_UC8276.h"
 
 #endif /* _ADAFRUIT_EPD_H_ */

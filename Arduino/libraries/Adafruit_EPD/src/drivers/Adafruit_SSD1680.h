@@ -1,8 +1,9 @@
 #ifndef LIB_ADAFRUIT_SSD1680
 #define LIB_ADAFRUIT_SSD1680
 
-#include "Adafruit_EPD.h"
 #include <Arduino.h>
+
+#include "Adafruit_EPD.h"
 
 #define SSD1680_DRIVER_CONTROL 0x01
 #define SSD1680_GATE_VOLTAGE 0x03
@@ -26,6 +27,7 @@
 #define SSD1680_READ_STATUS 0x2F
 #define SSD1680_WRITE_LUT 0x32
 #define SSD1680_WRITE_BORDER 0x3C
+#define SSD1680_END_OPTION 0x3F
 #define SSD1680_SET_RAMXPOS 0x44
 #define SSD1680_SET_RAMYPOS 0x45
 #define SSD1680_SET_RAMXCOUNT 0x4E
@@ -37,24 +39,25 @@
 */
 /**************************************************************************/
 class Adafruit_SSD1680 : public Adafruit_EPD {
-public:
+ public:
   Adafruit_SSD1680(int width, int height, int16_t SID, int16_t SCLK, int16_t DC,
                    int16_t RST, int16_t CS, int16_t SRCS, int16_t MISO,
                    int16_t BUSY = -1);
   Adafruit_SSD1680(int width, int height, int16_t DC, int16_t RST, int16_t CS,
-                   int16_t SRCS, int16_t BUSY = -1, SPIClass *spi = &SPI);
+                   int16_t SRCS, int16_t BUSY = -1, SPIClass* spi = &SPI);
 
   void begin(bool reset = true);
   void powerUp();
   void update();
   void powerDown();
 
-protected:
+ protected:
   uint8_t writeRAMCommand(uint8_t index);
   void setRAMAddress(uint16_t x, uint16_t y);
   void busy_wait();
 
   int8_t _xram_offset = 1;
+  uint8_t _display_update_val = 0xF4;
 };
 
 #endif
